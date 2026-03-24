@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:PitalitasApp"
+             x:Class="PitalitasApp.NewPage1"
+             BackgroundColor="#121212" 
+             Title="Menu Lateral">
+
+    <Grid RowDefinitions="Auto, *">
+
+        <VerticalStackLayout Grid.Row="0" Padding="30,40,30,20" Spacing="10">
+            <Image Source="pitahaya.png" HeightRequest="60" HorizontalOptions="Start" />
+            <Label Text="Pitalitas App" FontSize="22" FontAttributes="Bold" TextColor="White" />
+            <Label Text="Administrador" FontSize="14" TextColor="Gray" />
+        </VerticalStackLayout>
+
+        <CollectionView Grid.Row="1"
+                        x:Name="navMenu"
+                        x:FieldModifier="public"
+                        SelectionMode="Single"
+                        Margin="0,10">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="20,12">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroupList>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="Selected">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor" Value="#33ffffff" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateGroupList>
+                        </VisualStateManager.VisualStateGroups>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Image Source="{Binding IconSource}" 
+                               HeightRequest="22" 
+                               WidthRequest="22"
+                               VerticalOptions="Center">
+                            <Image.Behaviors>
+                            </Image.Behaviors>
+                        </Image>
+
+                        <Label Grid.Column="1"
+                               Margin="15,0"
+                               Text="{Binding Title}"
+                               FontSize="16"
+                               TextColor="White"
+                               VerticalOptions="Center" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+            <CollectionView.ItemsSource>
+                <x:Array Type="{x:Type local:FlyoutPageItem}">
+                    <local:FlyoutPageItem Title="Inicio" IconSource="home.png" />
+                    <local:FlyoutPageItem Title="Menú" IconSource="menu.png" />
+                    <local:FlyoutPageItem Title="Dar de alta platillo" IconSource="food.png" />
+                    <local:FlyoutPageItem Title="Clientes" IconSource="customer.png" />
+                    <local:FlyoutPageItem Title="Reportes pedidos" IconSource="report.png" />
+                    <local:FlyoutPageItem Title="Configuración" IconSource="settings.png" />
+                </x:Array>
+            </CollectionView.ItemsSource>
+        </CollectionView>
+    </Grid>
+</ContentPage>
