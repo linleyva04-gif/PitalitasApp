@@ -1,4 +1,4 @@
-namespace PitalitasApp;
+namespace PitalitasApp.Views;
 
 public partial class NewPage1 : ContentPage
 {
