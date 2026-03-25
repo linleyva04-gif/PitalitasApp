@@ -18,6 +18,7 @@
                         x:Name="navMenu"
                         x:FieldModifier="public"
                         SelectionMode="Single"
+                        SelectionChanged="navMenu_SelectionChanged"
                         Margin="0,10">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
@@ -60,7 +61,6 @@
 
             <CollectionView.ItemsSource>
                 <x:Array Type="{x:Type local:FlyoutPageItem}">
-                    <local:FlyoutPageItem Title="Inicio" IconSource="home.png" />
                     <local:FlyoutPageItem Title="Menú" IconSource="menu.png" />
                     <local:FlyoutPageItem Title="Dar de alta platillo" IconSource="food.png" />
                     <local:FlyoutPageItem Title="Clientes" IconSource="customer.png" />

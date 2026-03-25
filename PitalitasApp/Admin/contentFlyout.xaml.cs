@@ -1,3 +1,5 @@
+using PitalitasApp.Admin;
+
 namespace PitalitasApp;
 
 public partial class NewPage1 : ContentPage
@@ -6,4 +8,44 @@ public partial class NewPage1 : ContentPage
 	{
 		InitializeComponent();
 	}
+
+    private void navMenu_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var item = e.CurrentSelection.FirstOrDefault() as FlyoutPageItem;
+
+        if (item == null)
+            return;
+
+        Page pagina = null;
+
+        switch (item.Title)
+        {
+            case "Menú":
+                pagina = new Menu();
+                break;
+
+            case "Dar de alta platillo":
+                pagina = new AltaView();
+                break;
+
+            case "Clientes":
+                pagina = new Clientes();
+                break;
+
+            case "Reportes pedidos":
+                pagina = new ReportesView();
+                break;
+
+            case "Configuración":
+                pagina = new configuracionView();
+                break;
+        }
+
+        if (pagina != null)
+        {
+            var flyout = (FlyoutPage)Application.Current.MainPage;
+            flyout.Detail = new NavigationPage(pagina);
+            flyout.IsPresented = false;
+        }
+    }
 }

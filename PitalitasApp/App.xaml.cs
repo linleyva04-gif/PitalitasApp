@@ -1,4 +1,6 @@
-﻿namespace PitalitasApp
+﻿using PitalitasApp.Admin;
+
+namespace PitalitasApp
 {
     public partial class App : Application
     {
