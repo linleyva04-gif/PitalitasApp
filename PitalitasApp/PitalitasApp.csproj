@@ -63,31 +63,22 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Admin\contentFlyout.xaml.cs">
-	    <DependentUpon>contentFlyout.xaml</DependentUpon>
-	  </Compile>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <MauiXaml Update="Admin\AltaView.xaml">
+	  <MauiXaml Update="Views\Admin\AltaView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Admin\Clientes.xaml">
+	  <MauiXaml Update="Views\Admin\Clientes.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Admin\configuracionView.xaml">
+	  <MauiXaml Update="Views\Admin\configuracionView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Admin\Menu.xaml">
+	  <MauiXaml Update="Views\Admin\Menu.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Admin\contentFlyout.xaml">
+	  <MauiXaml Update="Views\Admin\MenuView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Admin\MenuView.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Admin\ReportesView.xaml">
+	  <MauiXaml Update="Views\Admin\ReportesView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

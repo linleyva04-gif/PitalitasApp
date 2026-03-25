@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PitalitasApp.Admin.Clientes"
+             Title="Clientes">
+    
+    
+    <Grid RowDefinitions="Auto,Auto,*" Padding="20" RowSpacing="35">
+        <!-- buscador para los clientes, falta hacerlo redondito -->
+        <Frame Grid.Row="0"
+             BackgroundColor="#0A0A0A"
+             CornerRadius="25"
+             Padding="15"
+             HeightRequest="60">
+
+            <SearchBar Placeholder="Buscar cliente"
+                    BackgroundColor="Transparent"
+                    TextColor="White"/>
+
+        </Frame>
+
+        <!-- frames para clientes -->
+
+        <CollectionView Grid.Row="2">
+            <CollectionView.ItemsSource>
+                <x:Array Type="{x:Type x:String}">
+                    <x:String>1</x:String>
+                    <x:String>2</x:String>
+                    <x:String>2</x:String>
+                </x:Array>
+            </CollectionView.ItemsSource>
+
+            <CollectionView.ItemTemplate>
+
+                <DataTemplate>
+                    <Grid ColumnDefinitions="*,*">
+                        <VerticalStackLayout HorizontalOptions="Center" Grid.Column="0">
+                            <Frame BackgroundColor="#1E1E1E"
+                                 CornerRadius="15"
+                                 Padding="15"
+                                 Margin="0,5"                    
+                                 BorderColor="#0A0A0A"
+                                WidthRequest="200"
+                                HeightRequest="250">
+
+
+                                <VerticalStackLayout Spacing="10">
+
+                                    <Image Source="burger.png"
+                                         HeightRequest="100"
+                                         WidthRequest="100"/>
+
+                                    <VerticalStackLayout>
+
+                                        <Label Text="Hamburguesa clásica"
+                                             FontAttributes="Bold"
+                                             TextColor="White"
+                                             FontSize="16"/>
+
+                                        <Label Text="Carne, queso, lechuga"
+                                             TextColor="#B0B0B0"
+                                             FontSize="12"/>
+
+                                        <Label Text="$120"
+                                             TextColor="#FF0000"
+                                             FontAttributes="Bold"/>
+
+                                    </VerticalStackLayout>
+
+                                    <Button BackgroundColor="#1E1E1E"
+                                          Text="+"
+                                          TextColor="#FF0000"
+                                          FontSize="Large"
+                                          FontAttributes="Bold" 
+                                          Margin="10,0,0,0"
+                                          WidthRequest="50"
+                                          HeightRequest="50"
+                                          CornerRadius="30"/>
+
+                                </VerticalStackLayout>
+
+
+                            </Frame>
+
+
+                        </VerticalStackLayout>
+
+                    </Grid>
+
+
+
+                </DataTemplate>
+
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+
+    </Grid>
+</ContentPage>

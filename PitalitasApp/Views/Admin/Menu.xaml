@@ -103,21 +103,22 @@
 
                                 <DataTemplate>
                                     <Grid ColumnDefinitions="*,*">
-                                        <VerticalStackLayout HorizontalOptions="Center" Grid.Column="0">
+                                        <VerticalStackLayout HorizontalOptions="Center" Grid.Column="0" Margin="40,0,0,0">
+                                            
                                             <Frame BackgroundColor="#1E1E1E"
                                                     CornerRadius="15"
                                                     Padding="15"
                                                     Margin="0,5"                    
                                                     BorderColor="#0A0A0A"
-                                                   WidthRequest="200"
-                                                   HeightRequest="250">
+                                                   WidthRequest="150"
+                                                   HeightRequest="200">
 
 
                                                 <VerticalStackLayout Spacing="10">
 
                                                     <Image Source="burger.png"
-                                                            HeightRequest="100"
-                                                            WidthRequest="100"/>    
+                                                            HeightRequest="70"
+                                                            WidthRequest="70"/>    
 
                                                     <VerticalStackLayout>
 
