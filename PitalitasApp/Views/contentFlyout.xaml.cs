@@ -20,7 +20,7 @@ public partial class NewPage1 : ContentPage
 
         switch (item.Title)
         {
-            case "Menú":
+            case "Menï¿½":
                 pagina = new Menu();
                 break;
 
@@ -36,7 +36,7 @@ public partial class NewPage1 : ContentPage
                 pagina = new ReportesView();
                 break;
 
-            case "Configuración":
+            case "Configuraciï¿½n":
                 pagina = new configuracionView();
                 break;
         }
