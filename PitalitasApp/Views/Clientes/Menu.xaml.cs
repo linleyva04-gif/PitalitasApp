@@ -1,8 +1,8 @@
 namespace PitalitasApp;
 
-public partial class Menu : FlyoutPage
+public partial class MenuCliente : FlyoutPage
 {
-	public Menu()
+	public MenuCliente()
 	{
 		InitializeComponent();
 
@@ -14,7 +14,7 @@ public partial class Menu : FlyoutPage
         if (item == null)
             return;
 
-        Detail = new NavigationPage((Page)Activator.CreateInstance(item.TargetType));
+        Detail = new NavigationPage((Page)Activator.CreateInstance(item.ClientTargetType));
         IsPresented = false;
     }
 }

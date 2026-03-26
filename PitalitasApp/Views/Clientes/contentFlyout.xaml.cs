@@ -18,23 +18,8 @@ public partial class NewPage1 : ContentPage
 
         Page pagina = null;
 
-        switch (item.Title)
+        switch (item.ClientTitle)
         {
-            case "Menú":
-                pagina = new Menu();
-                break;
-
-            case "Dar de alta platillo":
-                pagina = new AltaView();
-                break;
-
-            case "Clientes":
-                pagina = new Clientes();
-                break;
-
-            case "Reportes pedidos":
-                pagina = new ReportesView();
-                break;
 
             case "Configuración":
                 pagina = new configuracionView();

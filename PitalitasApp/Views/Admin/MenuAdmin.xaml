@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <FlyoutPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-            x:Class="PitalitasApp.Menu"
+            x:Class="PitalitasApp.MenuAdmin"
             xmlns:local="clr-namespace:PitalitasApp"
-            Title="Menu"              
+            Title="MenuAdmin"              
             BackgroundColor="#0A0A0A">
 
     <FlyoutPage.Flyout>
@@ -24,6 +24,7 @@
                             <SearchBar Placeholder="Buscar platillo"
                                        BackgroundColor="Transparent"
                                        TextColor="White"/>
+                            
 
                         </Frame>
 
@@ -91,6 +92,15 @@
                         <!-- frames para platillos -->
 
                         <CollectionView Grid.Row="2">
+
+                            <CollectionView.ItemsLayout>
+                                <GridItemsLayout Orientation="Vertical"
+                                                 Span="2"
+                                                 HorizontalItemSpacing="10"
+                                                 VerticalItemSpacing="10"
+                                                 />
+                                
+                            </CollectionView.ItemsLayout>
                             <CollectionView.ItemsSource>
                                 <x:Array Type="{x:Type x:String}">
                                     <x:String>1</x:String>
@@ -102,42 +112,40 @@
                             <CollectionView.ItemTemplate>
 
                                 <DataTemplate>
-                                    <Grid ColumnDefinitions="*,*">
-                                        <VerticalStackLayout HorizontalOptions="Center" Grid.Column="0" Margin="40,0,0,0">
-                                            
-                                            <Frame BackgroundColor="#1E1E1E"
+
+                                    <Frame BackgroundColor="#1E1E1E"
                                                     CornerRadius="15"
                                                     Padding="15"
-                                                    Margin="0,5"                    
+                                                    Margin="5"                    
                                                     BorderColor="#0A0A0A"
-                                                   WidthRequest="150"
+                                                   WidthRequest="165"
                                                    HeightRequest="200">
 
 
-                                                <VerticalStackLayout Spacing="10">
+                                        <VerticalStackLayout Spacing="10">
 
-                                                    <Image Source="burger.png"
+                                            <Image Source="burger.png"
                                                             HeightRequest="70"
-                                                            WidthRequest="70"/>    
+                                                            WidthRequest="70"/>
 
-                                                    <VerticalStackLayout>
+                                            <VerticalStackLayout>
 
-                                                        <Label Text="Hamburguesa clásica"
+                                                <Label Text="Hamburguesa clásica"
                                                                 FontAttributes="Bold"
                                                                 TextColor="White"
                                                                 FontSize="16"/>
 
-                                                        <Label Text="Carne, queso, lechuga"
+                                                <Label Text="Carne, queso, lechuga"
                                                                 TextColor="#B0B0B0"
                                                                 FontSize="12"/>
 
-                                                        <Label Text="$120"
+                                                <Label Text="$120"
                                                                 TextColor="#FF0000"
-                                                                FontAttributes="Bold"/> 
+                                                                FontAttributes="Bold"/>
 
-                                                    </VerticalStackLayout>
+                                            </VerticalStackLayout>
 
-                                                    <Button BackgroundColor="#1E1E1E"
+                                            <Button BackgroundColor="#1E1E1E"
                                                              Text="+"
                                                              TextColor="#FF0000"
                                                              FontSize="Large"
@@ -147,18 +155,8 @@
                                                              HeightRequest="50"
                                                              CornerRadius="30"/>
 
-                                                </VerticalStackLayout>
-
-                                                
-                                            </Frame>
-                                            
-                                            
                                         </VerticalStackLayout>
-
-                                    </Grid>
-                                    
-                                   
-
+                                    </Frame>
                                 </DataTemplate>
 
                             </CollectionView.ItemTemplate>
