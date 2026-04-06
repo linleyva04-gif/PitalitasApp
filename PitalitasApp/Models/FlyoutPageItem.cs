@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PitalitasApp
+namespace PitalitasApp.Models
 {
-    class FlyoutPageItem
+    public class FlyoutPageItem
     {
-        public string ClientTitle { get; set; }
+        public string Title { get; set; }
         public string IconSource { get; set; }
-        public Type ClientTargetType { get; set; }
+        public Type TargetType { get; set; }
     }
 }

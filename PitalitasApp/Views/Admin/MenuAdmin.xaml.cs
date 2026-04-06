@@ -1,3 +1,5 @@
+using PitalitasApp.Models;
+
 namespace PitalitasApp;
 
 public partial class MenuAdmin : FlyoutPage
