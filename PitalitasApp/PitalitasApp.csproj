@@ -48,11 +48,16 @@
 		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.20" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.20" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
+		<PackageReference Include="postgrest-csharp" Version="3.5.1" />
+		<PackageReference Include="Supabase" Version="1.1.1" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Compile Update="Admin\contentFlyout.xaml.cs">
 	    <DependentUpon>contentFlyout.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\login\login.xaml.cs">
+	    <DependentUpon>login.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
@@ -78,9 +83,11 @@
 	  <MauiXaml Update="Admin\ReportesView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Controllers\" />
+	  <MauiXaml Update="carritoCompras.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\login\login.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 </Project>

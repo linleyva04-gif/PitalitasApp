@@ -4,10 +4,9 @@ namespace PitalitasApp;
 
 public partial class MenuCliente : FlyoutPage
 {
-	public MenuCliente()
-	{
-		InitializeComponent();
-
+    public MenuCliente()
+{
+        InitializeComponent();
     }
 
     private void OnSelectedItem(object sender, SelectionChangedEventArgs e)
@@ -16,7 +15,7 @@ public partial class MenuCliente : FlyoutPage
         if (item == null)
             return;
 
-        Detail = new NavigationPage((Page)Activator.CreateInstance(item.ClientTargetType));
+        Detail = new NavigationPage((Page)Activator.CreateInstance(item.TargetType));
         IsPresented = false;
     }
 }

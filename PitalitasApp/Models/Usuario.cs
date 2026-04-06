@@ -1,13 +1,29 @@
-﻿namespace PitalitasApp.Models
+﻿using Supabase.Postgrest.Attributes;
+using Supabase.Postgrest.Models;
+
+namespace PitalitasApp.Models
 {
-    public class Usuario
+    [Table("Usuarios")]
+    public class Usuario : BaseModel
     {
-        public int IdUsuario { get; set; }
+
+        [PrimaryKey("id", false)]
+        public long Id { get; set; }
+
+        [Column("Name")] 
         public string Name { get; set; }
+
+        [Column("telefono")]
         public string telefono { get; set; }
+
+        [Column("Domicilio")]
         public string Domicilio { get; set; }
+
+        [Column("Correo")]
         public string Correo { get; set; }
-        public string rol {  get; set; }
+
+        [Column("rol")]
+        public string rol { get; set; }
 
     }
 }

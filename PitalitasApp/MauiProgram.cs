@@ -13,6 +13,9 @@ namespace PitalitasApp
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                    fonts.AddFont("Yellowtail-Regular.ttf", "Yellowtail");
+                    fonts.AddFont("Inter-VariableFont.ttf", "Inter");
+
                 });
 
 #if DEBUG

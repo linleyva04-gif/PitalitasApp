@@ -1,4 +1,5 @@
 ﻿using PitalitasApp.Admin;
+using PitalitasApp.Views.login;
 
 namespace PitalitasApp
 {
@@ -8,7 +9,7 @@ namespace PitalitasApp
         {
             InitializeComponent();
 
-            MainPage = new Menu();
+            MainPage = new LoginView();
         }
     }
 }

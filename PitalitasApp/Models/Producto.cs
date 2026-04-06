@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Supabase.Postgrest.Attributes;
+using Supabase.Postgrest.Models;
 
 namespace PitalitasApp.Models
 {
-    public class Producto
+    [Table("Platillos")]
+    public class Producto : BaseModel
     {
-        public int IdProducto { get; set; }
-        public string Name { get; set; }
-        public string Descripccion { get; set; }
-        public double Precio { get; set; }
-        public string UrlFoto { get; set; }
-        public bool Estado { get; set; }
+        [PrimaryKey("id", false)]
+        public int id { get; set; }
+        public string nombre { get; set; }
+        public string descripcion { get; set; }
+        public double precio { get; set; }
+        public string seccion { get; set; }
     }
 }

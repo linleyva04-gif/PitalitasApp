@@ -2,11 +2,26 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:PitalitasApp"
-             x:Class="PitalitasApp.contentFlyout"
-             BackgroundColor="#121212" 
-             Title="Menu Lateral">
+             x:Class="PitalitasApp.contentFlyoutAdmin"
+             Title="Menu Lateral Admin"
+             BackgroundColor="Transparent">
+    <Border StrokeThickness="1"
+            Margin="0,25,15,0"
+            VerticalOptions="Fill"
+            StrokeShape="RoundRectangle 0,30,0,30">
 
-    <Grid RowDefinitions="Auto, *">
+        <Border.Stroke>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#44FFFFFF" Offset="0.0" />
+                <GradientStop Color="#11FFFFFF" Offset="1.0" />
+            </LinearGradientBrush>
+        </Border.Stroke>
+
+        <Border.Background>
+            <SolidColorBrush Color="#E6121212" />
+        </Border.Background>
+
+        <Grid RowDefinitions="Auto, *">
 
         <VerticalStackLayout Grid.Row="0" Padding="30,40,30,20" Spacing="10">
             <Image Source="pitahaya.png" HeightRequest="60" HorizontalOptions="Start" />
@@ -15,10 +30,10 @@
         </VerticalStackLayout>
 
         <CollectionView Grid.Row="1"
-                        x:Name="navMenu"
+                        x:Name="navMenuAdmin"
                         x:FieldModifier="public"
                         SelectionMode="Single"
-                        SelectionChanged="navMenu_SelectionChanged"
+                        SelectionChanged="navMenu_SelectionChangedAdmin"
                         Margin="0,10">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
@@ -70,4 +85,5 @@
             </CollectionView.ItemsSource>
         </CollectionView>
     </Grid>
+    </Border>
 </ContentPage>

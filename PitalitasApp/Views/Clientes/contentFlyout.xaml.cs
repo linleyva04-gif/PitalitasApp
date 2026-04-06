@@ -3,9 +3,10 @@ using PitalitasApp.Models;
 
 namespace PitalitasApp;
 
-public partial class NewPage1 : ContentPage
+public partial class contentFlyout : ContentPage
 {
-	public NewPage1()
+    Supabase.Client _supabase;
+    public contentFlyout()
 	{
 		InitializeComponent();
 	}
@@ -19,11 +20,9 @@ public partial class NewPage1 : ContentPage
 
         Page pagina = null;
 
-        switch (item.ClientTitle)
+        switch (item.Title)
         {
-            case "Menú":
-                pagina = new Menu();
-                break;
+
 
             case "Dar de alta platillo":
                 pagina = new AltaView();
