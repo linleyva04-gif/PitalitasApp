@@ -24,6 +24,11 @@ public partial class MenuAdmin : FlyoutPage
         await PanelCarrito.TranslateTo(0, 0, 300, Easing.SinOut);
 
     }
+    async void CerrarCarrito(object sender, EventArgs e)
+    {
+        // Baja el panel de regreso (Y=0 a Y=800)
+        await PanelCarrito.TranslateTo(0, 800, 300, Easing.SinIn);
+    }
 
     private void OnSelectedItem(object sender, SelectionChangedEventArgs e)
     {
@@ -90,20 +95,33 @@ public partial class MenuAdmin : FlyoutPage
         if (productoSeleccionado != null)
 
         {
-
-            carrito.Add(new carrito
-
+            // 1. Buscamos si el platillo ya está en el carrito
+            var itemExistente = carrito.FirstOrDefault(x => x.Producto.id == productoSeleccionado.id);
+            if (itemExistente != null)
             {
+                // Si ya existe, solo le sumamos 1 a la cantidad
+                itemExistente.Cantidad++;
 
-                Producto = productoSeleccionado,
+                // TRUCO MAUI: Para que la pantalla note el cambio de cantidad, 
+                // a veces hay que "refrescar" el elemento en la lista.
+                var index = carrito.IndexOf(itemExistente);
+                carrito[index] = itemExistente;
+            }
+            else
+            {
+                // Si es un platillo nuevo, lo agregamos a la lista
+                carrito.Add(new carrito
+                {
+                    Producto = productoSeleccionado,
+                    Cantidad = 1
+                });
+            }
 
-                Cantidad = 1
-
-            });
-
-
-
-            LblContadorCarrito.Text = carrito.Count.ToString();
+            // 2. Actualizamos el globito rojo sumando TODAS las cantidades
+            // (No solo la cantidad de items diferentes, sino el total de platillos)
+            int totalArticulos = carrito.Sum(x => x.Cantidad);
+            LblContadorCarrito.Text = totalArticulos.ToString();
+        
 
         }
 

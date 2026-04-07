@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <FlyoutPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+            xmlns:models="clr-namespace:PitalitasApp.Models"
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             x:Class="PitalitasApp.MenuCliente"
             xmlns:local="clr-namespace:PitalitasApp"
@@ -7,7 +8,7 @@
             BackgroundColor="#0A0A0A">
 
     <FlyoutPage.Flyout>
-        <local:contentFlyoutAdmin x:Name="flyoutPage"/>
+        <local:contentFlyout x:Name="flyoutPage"/>
     </FlyoutPage.Flyout>
 
     <FlyoutPage.Detail>
@@ -65,34 +66,25 @@
 
                             <HorizontalStackLayout Spacing="10">
 
-                                <Frame BackgroundColor="#F5F3E9"
-                                       CornerRadius="20"
-                                       Padding="16,8">
+                                <Frame BackgroundColor="#F5F3E9" CornerRadius="20" Padding="16,8">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnCategoriaTapped" CommandParameter="Todo" />
+                                    </Frame.GestureRecognizers>
                                     <Label Text="Todo" TextColor="Black"/>
                                 </Frame>
 
-                                <Frame BackgroundColor="#1E1E1E"
-                                       CornerRadius="20"
-                                       Padding="12,6">
+                                <Frame BackgroundColor="#1E1E1E" CornerRadius="20" Padding="12,6">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnCategoriaTapped" CommandParameter="Entradas" />
+                                    </Frame.GestureRecognizers>
                                     <Label Text="Entradas" TextColor="White"/>
                                 </Frame>
 
-                                <Frame BackgroundColor="#1E1E1E"
-                                       CornerRadius="20"
-                                       Padding="12,6">
+                                <Frame BackgroundColor="#1E1E1E" CornerRadius="20" Padding="12,6">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnCategoriaTapped" CommandParameter="Hamburguesas" />
+                                    </Frame.GestureRecognizers>
                                     <Label Text="Hamburguesas" TextColor="White"/>
-                                </Frame>
-
-                                <Frame BackgroundColor="#1E1E1E"
-                                       CornerRadius="20"
-                                       Padding="12,6">
-                                    <Label Text="Boneless" TextColor="White"/>
-                                </Frame>
-
-                                <Frame BackgroundColor="#1E1E1E"
-                                       CornerRadius="20"
-                                       Padding="12,6">
-                                    <Label Text="Bebidas" TextColor="White"/>
                                 </Frame>
 
                             </HorizontalStackLayout>
@@ -155,39 +147,54 @@
 
                         <!-- el carrillo de compras -->
 
-                        <Grid Grid.RowSpan="4"
-                              HorizontalOptions="End"
-                              VerticalOptions="End"
-                              Margin="20">
-
-                            <Button WidthRequest="60"
-                                    HeightRequest="60"
-                                    CornerRadius="30"
-                                    BackgroundColor="#F2F0E6"
-                                    BorderColor="#F2F0E6"
-                                    BorderWidth="2"
-                                    ImageSource="carrillo.png"/>
-
-
+                        <Grid Grid.RowSpan="4" HorizontalOptions="End" VerticalOptions="End" Margin="20">
+                            <Button WidthRequest="60" HeightRequest="60" 
+                                CornerRadius="30" BackgroundColor="#F2F0E6" 
+                                BorderColor="#F2F0E6" BorderWidth="2" 
+                                ImageSource="carrillo.png"
+                                Clicked="AbrirCarrito"/> 
                             <Frame BackgroundColor="#FF6A00"
-                                   CornerRadius="10"
-                                   HeightRequest="20"
-                                   WidthRequest="20"
-                                   HorizontalOptions="End"
-                                   VerticalOptions="Start"
-                                   TranslationX="5"
-                                   TranslationY="-5"
-                                   BorderColor="#FF6A00">
-
-                                <Label Text="3"
-                                       FontSize="10"
-                                       HorizontalOptions="Center"
-                                       VerticalOptions="Center"
-                                       TextColor="White"/>
-
+                                InputTransparent="True"
+                                CornerRadius="10" HeightRequest="20" WidthRequest="20" 
+                                Padding="0" HorizontalOptions="End" VerticalOptions="Start" 
+                                TranslationX="5" TranslationY="-5" BorderColor="#FF6A00" HasShadow="False">
+                                <Label x:Name="LblContadorCarrito" Text="0" FontSize="10" 
+                                    HorizontalOptions="Center" VerticalOptions="Center" TextColor="White"/>
                             </Frame>
-
                         </Grid>
+
+                        <Frame x:Name="PanelCarrito" 
+                               Grid.Row="0"
+                               Grid.RowSpan="4"
+                               BackgroundColor="#1E1E1E" CornerRadius="30" Padding="20" 
+                               TranslationY="800" HasShadow="True" VerticalOptions="End">
+                            <VerticalStackLayout Spacing="20">
+                                <Label Text="Tu carrito" FontSize="22" FontAttributes="Bold" TextColor="White"/>
+
+                                <CollectionView x:Name="ListaCarrito" HeightRequest="300">
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate x:DataType="models:carrito">
+                                            <Frame BackgroundColor="#F5F3E9" CornerRadius="15" Margin="0,0,0,10" Padding="15">
+                                                <Grid ColumnDefinitions="*,Auto">
+                                                    <VerticalStackLayout>
+                                                        <Label Text="{Binding Producto.nombre}" TextColor="#FF6A00" FontAttributes="Bold" FontSize="16"/>
+                                                        <Label Text="{Binding Cantidad, StringFormat='Cantidad: {0}'}" TextColor="Gray" FontSize="12"/>
+                                                    </VerticalStackLayout>
+
+                                                    <Label Grid.Column="1" Text="{Binding Subtotal, StringFormat='${0:F2}'}" 
+                                                           TextColor="#FF6A00" FontAttributes="Bold" FontSize="18" VerticalOptions="Center"/>
+                                                </Grid>
+                                            </Frame>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+
+                                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                    <Button Grid.Column="0" Text="Realizar" BackgroundColor="#F5F3E9" TextColor="#FF6A00" CornerRadius="20" HeightRequest="60"/>
+                                    <Button Grid.Column="1" Text="Cerrar" Clicked="CerrarCarrito" BackgroundColor="#F5F3E9" TextColor="#FF6A00" CornerRadius="20" HeightRequest="60"/>
+                                </Grid>
+                            </VerticalStackLayout>
+                        </Frame>
 
                     </Grid>
 

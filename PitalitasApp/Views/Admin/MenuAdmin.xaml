@@ -304,7 +304,8 @@
                                             BackgroundColor="#F5F3E9"
                                             TextColor="#FF6A00"
                                             CornerRadius="20"
-                                            HeightRequest="60"/>
+                                            HeightRequest="60"
+                                            Clicked="CerrarCarrito"/>
                                 </Grid>
                                 
 
