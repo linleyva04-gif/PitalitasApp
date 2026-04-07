@@ -12,4 +12,12 @@ namespace PitalitasApp.Models
         public string IconSource { get; set; }
         public Type TargetType { get; set; }
     }
+
+    public class FlyoutPageItemCliente
+    {
+        public string Title { get; set; }
+        public string IconSource { get; set; }
+        public Type TargetType { get; set; }
+    }
+
 }
