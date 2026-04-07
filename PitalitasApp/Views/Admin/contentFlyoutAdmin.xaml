@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:PitalitasApp"
              x:Class="PitalitasApp.contentFlyoutAdmin"
+             xmlns:models="clr-namespace:PitalitasApp.Models"
              Title="Menu Lateral Admin"
              BackgroundColor="Transparent">
     <Border StrokeThickness="1"
@@ -75,12 +76,12 @@
             </CollectionView.ItemTemplate>
 
             <CollectionView.ItemsSource>
-                <x:Array Type="{x:Type local:FlyoutPageItem}">
-                    <local:FlyoutPageItem Title="Menú" IconSource="menu.png" />
-                    <local:FlyoutPageItem Title="Dar de alta platillo" IconSource="food.png" />
-                    <local:FlyoutPageItem Title="Clientes" IconSource="customer.png" />
-                    <local:FlyoutPageItem Title="Reportes pedidos" IconSource="report.png" />
-                    <local:FlyoutPageItem Title="Configuración" IconSource="settings.png" />
+                <x:Array Type="{x:Type models:FlyoutPageItem}">
+                        <models:FlyoutPageItem Title="Menú" IconSource="menu.png" />
+                        <models:FlyoutPageItem Title="Dar de alta platillo" IconSource="food.png" />
+                        <models:FlyoutPageItem Title="Clientes" IconSource="customer.png" />
+                        <models:FlyoutPageItem Title="Reportes pedidos" IconSource="report.png" />
+                    <models:FlyoutPageItem Title="Configuración" IconSource="settings.png" />
                 </x:Array>
             </CollectionView.ItemsSource>
         </CollectionView>
