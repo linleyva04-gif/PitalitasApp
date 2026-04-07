@@ -14,128 +14,88 @@
     <FlyoutPage.Detail>
         <NavigationPage>
             <x:Arguments>
+                <ContentPage BackgroundColor="#181818" Title="Menú">
 
-                <ContentPage BackgroundColor="#181818"
-                            Title="Menú">
+                    <Grid>
+                        <CollectionView x:Name="ListaPlatillos" Margin="20">
 
-                    <Grid RowDefinitions="Auto,Auto, Auto, *"
-                          Padding="20"
-                          RowSpacing="30">
+                            <CollectionView.Header>
+                                <VerticalStackLayout Spacing="30" Padding="0,0,0,20">
 
-                        <HorizontalStackLayout Grid.Row="0" Spacing="30">
-                            <Image Source="pitahaya.png"
-                                   HeightRequest="80"
-                                   HorizontalOptions="Center"/>
+                                    <HorizontalStackLayout Spacing="30">
+                                        <Image Source="pitahaya.png" HeightRequest="80" VerticalOptions="Center"/>
+                                        <VerticalStackLayout Spacing="2" VerticalOptions="Center">
+                                            <Label Text="Buenas tardes," TextColor="#9A9A9A" FontSize="13"/>
+                                            <Label Text="Cliente" TextColor="White" FontSize="26" FontAttributes="Bold"/>
+                                        </VerticalStackLayout>
+                                    </HorizontalStackLayout>
 
-                            <VerticalStackLayout Spacing="2" VerticalOptions="Center">
+                                    <Frame BackgroundColor="#2A2A2A" CornerRadius="30" Padding="10" 
+                                           BorderColor="#2A2A2A" HeightRequest="50" HasShadow="False">
+                                        <SearchBar Placeholder="Buscar platillo" TextColor="White"
+                                                   PlaceholderColor="DarkGray" BackgroundColor="Transparent"/>
+                                    </Frame>
 
-                                <Label Text="Buenas tardes,"
-                                       TextColor="#9A9A9A"
-                                       FontSize="13"/>
+                                    <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+                                        <HorizontalStackLayout Spacing="10">
 
-                                <Label Text="Cliente"
-                                       TextColor="White"
-                                       FontSize="26"
-                                       FontAttributes="Bold"/>
+                                            <Frame x:Name="FrameTodo" BackgroundColor="#F5F3E9" CornerRadius="20" Padding="16,8">
+                                                <Frame.GestureRecognizers>
+                                                    <TapGestureRecognizer Tapped="OnCategoriaTapped" CommandParameter="Todo"/>
+                                                </Frame.GestureRecognizers>
+                                                <Label x:Name="LblTodo" Text="Todo" TextColor="Black"/>
+                                            </Frame>
 
-                            </VerticalStackLayout>
+                                            <Frame x:Name="FrameEntradas" BackgroundColor="#1E1E1E" CornerRadius="20" Padding="12,6">
+                                                <Frame.GestureRecognizers>
+                                                    <TapGestureRecognizer Tapped="OnCategoriaTapped" CommandParameter="Entradas"/>
+                                                </Frame.GestureRecognizers>
+                                                <Label x:Name="LblEntradas" Text="Entradas" TextColor="White"/>
+                                            </Frame>
 
+                                            <Frame x:Name="FrameHamburguesas" BackgroundColor="#1E1E1E" CornerRadius="20" Padding="12,6">
+                                                <Frame.GestureRecognizers>
+                                                    <TapGestureRecognizer Tapped="OnCategoriaTapped" CommandParameter="Hamburguesas"/>
+                                                </Frame.GestureRecognizers>
+                                                <Label x:Name="LblHamburguesas" Text="Hamburguesas" TextColor="White"/>
+                                            </Frame>
 
-                        </HorizontalStackLayout>
+                                            <Frame x:Name="FrameBebidas" BackgroundColor="#1E1E1E" CornerRadius="20" Padding="12,6">
+                                                <Frame.GestureRecognizers>
+                                                    <TapGestureRecognizer Tapped="OnCategoriaTapped" CommandParameter="Bebidas"/>
+                                                </Frame.GestureRecognizers>
+                                                <Label x:Name="LblBebidas" Text="Bebidas" TextColor="White"/>
+                                            </Frame>
 
-                        <!-- buscador -->
-
-                        <Frame Grid.Row="1"
-                               BackgroundColor="#2A2A2A"
-                               CornerRadius="30"
-                               Padding="10"
-                               BorderColor="#2A2A2A"
-                               HasShadow="False"
-                               HeightRequest="50">
-
-                            <SearchBar Placeholder="Buscar platillo"
-                                       TextColor="White"
-                                       PlaceholderColor="DarkGray"
-                                       BackgroundColor="Transparent"/>
-                        </Frame>
-
-
-                        <!-- secciones -->
-
-                        <ScrollView Orientation="Horizontal" Grid.Row="2">
-
-                            <HorizontalStackLayout Spacing="10">
-
-                                <Frame BackgroundColor="#F5F3E9" CornerRadius="20" Padding="16,8">
-                                    <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer Tapped="OnCategoriaTapped" CommandParameter="Todo" />
-                                    </Frame.GestureRecognizers>
-                                    <Label Text="Todo" TextColor="Black"/>
-                                </Frame>
-
-                                <Frame BackgroundColor="#1E1E1E" CornerRadius="20" Padding="12,6">
-                                    <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer Tapped="OnCategoriaTapped" CommandParameter="Entradas" />
-                                    </Frame.GestureRecognizers>
-                                    <Label Text="Entradas" TextColor="White"/>
-                                </Frame>
-
-                                <Frame BackgroundColor="#1E1E1E" CornerRadius="20" Padding="12,6">
-                                    <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer Tapped="OnCategoriaTapped" CommandParameter="Hamburguesas" />
-                                    </Frame.GestureRecognizers>
-                                    <Label Text="Hamburguesas" TextColor="White"/>
-                                </Frame>
-
-                            </HorizontalStackLayout>
-
-                        </ScrollView>
-
-                        <!-- platillos -->
-
-                        <CollectionView x:Name="ListaPlatillos" Grid.Row="3">
+                                        </HorizontalStackLayout>
+                                    </ScrollView>
+                                </VerticalStackLayout>
+                            </CollectionView.Header>
 
                             <CollectionView.ItemsLayout>
-                                <GridItemsLayout Span="2"
-                                                 Orientation="Vertical"
-                                                 HorizontalItemSpacing="10"
-                                                 VerticalItemSpacing="10"/>
+                                <GridItemsLayout Span="2" Orientation="Vertical" 
+                                                 HorizontalItemSpacing="10" VerticalItemSpacing="10"/>
                             </CollectionView.ItemsLayout>
 
                             <CollectionView.ItemTemplate>
-                                <DataTemplate>
-                                    <Frame BackgroundColor="#F5F3E9"
-                                           CornerRadius="22"
-                                           Padding="18"
-                                           BorderColor="#00000000"
-                                           WidthRequest="160"
-                                           HasShadow="True">
-
+                                <DataTemplate x:DataType="models:Producto">
+                                    <Frame BackgroundColor="#F5F3E9" CornerRadius="22" Padding="18" 
+                                           BorderColor="Transparent" HasShadow="True">
                                         <Frame.Shadow>
-                                            <Shadow Brush="#000000" Opacity="0.6" Radius="18" Offset="0,8"/>
+                                            <Shadow Brush="#000000" Opacity="0.4" Radius="10" Offset="0,5"/>
                                         </Frame.Shadow>
 
                                         <VerticalStackLayout Spacing="12">
                                             <Image Source="burger.png" HeightRequest="100" HorizontalOptions="Center"/>
-
                                             <VerticalStackLayout Spacing="2">
                                                 <Label Text="{Binding nombre}" FontAttributes="Bold" FontSize="15" TextColor="Black"/>
-                                                <Label Text="{Binding descripcion}" FontSize="12" TextColor="#9A9A9A"/>
+                                                <Label Text="{Binding descripcion}" FontSize="12" TextColor="#9A9A9A" MaxLines="2" LineBreakMode="TailTruncation"/>
                                             </VerticalStackLayout>
-
                                             <Grid ColumnDefinitions="*,Auto">
-                                                <Label Text="{Binding precio, StringFormat='${0:F2}'}" FontSize="16" FontAttributes="Bold" TextColor="#FF6A00"/>
-
-                                                <Button Grid.Column="1"
-                                                        Clicked="OnAgregarAlCarrito_Clicked"
-                                                        Text="+"
-                                                        FontSize="18"
-                                                        FontAttributes="Bold"
-                                                        TextColor="White"
-                                                        BackgroundColor="#FF6A00"
-                                                        WidthRequest="36"
-                                                        HeightRequest="36"
-                                                        CornerRadius="15"/>
+                                                <Label Text="{Binding precio, StringFormat='${0:F2}'}" FontSize="16" FontAttributes="Bold" TextColor="#FF6A00" VerticalOptions="Center"/>
+                                                <Button Grid.Column="1" Text="+" FontSize="18" FontAttributes="Bold" TextColor="White" 
+                                                        BackgroundColor="#FF6A00" WidthRequest="36" HeightRequest="36" CornerRadius="18"
+                                                        Clicked="OnAgregarAlCarrito_Clicked" CommandParameter="{Binding .}"/>
                                             </Grid>
                                         </VerticalStackLayout>
                                     </Frame>
@@ -143,23 +103,15 @@
                             </CollectionView.ItemTemplate>
                         </CollectionView>
 
-
-
-                        <!-- el carrillo de compras -->
-
-                        <Grid Grid.RowSpan="4" HorizontalOptions="End" VerticalOptions="End" Margin="20">
-                            <Button WidthRequest="60" HeightRequest="60" 
-                                CornerRadius="30" BackgroundColor="#F2F0E6" 
-                                BorderColor="#F2F0E6" BorderWidth="2" 
-                                ImageSource="carrillo.png"
-                                Clicked="AbrirCarrito"/> 
-                            <Frame BackgroundColor="#FF6A00"
-                                InputTransparent="True"
-                                CornerRadius="10" HeightRequest="20" WidthRequest="20" 
-                                Padding="0" HorizontalOptions="End" VerticalOptions="Start" 
-                                TranslationX="5" TranslationY="-5" BorderColor="#FF6A00" HasShadow="False">
+                        <Grid HorizontalOptions="End" VerticalOptions="End" Margin="20">
+                            <Button WidthRequest="60" HeightRequest="60" CornerRadius="30" 
+                                    BackgroundColor="#F2F0E6" ImageSource="carrillo.png"
+                                    Clicked="AbrirCarrito"/>
+                            <Frame BackgroundColor="#FF6A00" CornerRadius="10" HeightRequest="20" WidthRequest="20" 
+                                   Padding="0" HorizontalOptions="End" VerticalOptions="Start" 
+                                   TranslationX="5" TranslationY="-5" InputTransparent="True">
                                 <Label x:Name="LblContadorCarrito" Text="0" FontSize="10" 
-                                    HorizontalOptions="Center" VerticalOptions="Center" TextColor="White"/>
+                                       HorizontalOptions="Center" VerticalOptions="Center" TextColor="White"/>
                             </Frame>
                         </Grid>
 
@@ -174,34 +126,56 @@
                                 <CollectionView x:Name="ListaCarrito" HeightRequest="300">
                                     <CollectionView.ItemTemplate>
                                         <DataTemplate x:DataType="models:carrito">
-                                            <Frame BackgroundColor="#F5F3E9" CornerRadius="15" Margin="0,0,0,10" Padding="15">
-                                                <Grid ColumnDefinitions="*,Auto">
-                                                    <VerticalStackLayout>
-                                                        <Label Text="{Binding Producto.nombre}" TextColor="#FF6A00" FontAttributes="Bold" FontSize="16"/>
-                                                        <Label Text="{Binding Cantidad, StringFormat='Cantidad: {0}'}" TextColor="Gray" FontSize="12"/>
-                                                    </VerticalStackLayout>
+                                            <SwipeView>
+                                                <SwipeView.LeftItems>
+                                                    <SwipeItems Mode="Execute">
+                                                        <SwipeItem Text="Eliminar"
+                                                                   BackgroundColor="Red"
+                                                                   Invoked="OnEliminarItemCarrito_Invoked"
+                                                                   CommandParameter="{Binding .}" 
+                                                                   />
+                                                    </SwipeItems>
+                                                </SwipeView.LeftItems>
 
-                                                    <Label Grid.Column="1" Text="{Binding Subtotal, StringFormat='${0:F2}'}" 
-                                                           TextColor="#FF6A00" FontAttributes="Bold" FontSize="18" VerticalOptions="Center"/>
-                                                </Grid>
-                                            </Frame>
+                                                <Frame BackgroundColor="#F5F3E9" 
+                                                       CornerRadius="15" 
+                                                       Margin="0,0,0,10" 
+                                                       Padding="15"
+                                                       BorderColor="#F5F3E9">        
+                                                    <Grid ColumnDefinitions="*,Auto">
+                                                        <VerticalStackLayout>
+                                                            <Label Text="{Binding Producto.nombre}" 
+                                                                   TextColor="#FF6A00" 
+                                                                   FontAttributes="Bold" 
+                                                                   FontSize="16"/>  
+                                                            <Label Text="{Binding Cantidad, StringFormat='Cantidad: {0}'}" 
+                                                                   TextColor="Gray" 
+                                                                   FontSize="12"/>
+                                                        </VerticalStackLayout>
+
+                                                        <Label Grid.Column="1" 
+                                                               Text="{Binding Subtotal, StringFormat='${0:F2}'}" 
+                                                               TextColor="#FF6A00" 
+                                                               FontAttributes="Bold" 
+                                                               FontSize="18" 
+                                                               VerticalOptions="Center"/>
+                                                    </Grid>
+                                                </Frame>
+                                            </SwipeView>
                                         </DataTemplate>
                                     </CollectionView.ItemTemplate>
                                 </CollectionView>
 
                                 <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
-                                    <Button Grid.Column="0" Text="Realizar" BackgroundColor="#F5F3E9" TextColor="#FF6A00" CornerRadius="20" HeightRequest="60"/>
-                                    <Button Grid.Column="1" Text="Cerrar" Clicked="CerrarCarrito" BackgroundColor="#F5F3E9" TextColor="#FF6A00" CornerRadius="20" HeightRequest="60"/>
+                                    <Button Grid.Column="0" Text="Realizar" BackgroundColor="#F5F3E9" TextColor="#FF6A00" CornerRadius="20" HeightRequest="60"  ImageSource="check.png" ContentLayout="Rigth, 10"/>
+                                    <Button Grid.Column="1" Text="Cerrar" Clicked="CerrarCarrito" BackgroundColor="#F5F3E9" TextColor="#FF6A00" CornerRadius="20" HeightRequest="60"  ImageSource="cancel.png" ContentLayout="Rigth, 10"/>
                                 </Grid>
                             </VerticalStackLayout>
                         </Frame>
-
                     </Grid>
 
                 </ContentPage>
-
             </x:Arguments>
         </NavigationPage>
     </FlyoutPage.Detail>
-
 </FlyoutPage>

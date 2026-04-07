@@ -1,3 +1,4 @@
+using PitalitasApp.Controllers;
 using PitalitasApp.Models;
 using System.Collections.ObjectModel; // Necesario para la lista dinámica
 
@@ -9,23 +10,50 @@ public partial class MenuCliente : FlyoutPage
     // Aquí guardaremos los platillos que se mostrarán en la pantalla
     public ObservableCollection<Producto> CatalogoProductos { get; set; } = new();
 
+
+
+    //uso de controlador de platillos
+    private readonly PlatillosController _controller = new PlatillosController();
+
+    public ObservableCollection<carrito> carrito = new();
+
+
     public MenuCliente()
     {
         InitializeComponent();
 
-        // 1. Llenamos la lista maestra 
-        _listaMaestraPlatillos.Add(new Producto { id = 1, nombre = "Hamburguesa Clásica", descripcion = "Carne, queso, lechuga", precio = 120.00, seccion = "Hamburguesas" });
-        _listaMaestraPlatillos.Add(new Producto { id = 2, nombre = "Boneless BBQ", descripcion = "Bañados en salsa BBQ, incluye aderezo", precio = 145.50, seccion = "Boneless" });
-        _listaMaestraPlatillos.Add(new Producto { id = 3, nombre = "Dedos de Queso", descripcion = "Orden de 6 piezas con salsa marinara", precio = 85.00, seccion = "Entradas" });
-        _listaMaestraPlatillos.Add(new Producto { id = 4, nombre = "Limonada Mineral", descripcion = "Bebida refrescante de 500ml", precio = 35.00, seccion = "Bebidas" });
-
-        // 2. Pasamos esos datos a la lista visual del catálogo
-        CatalogoProductos = new ObservableCollection<Producto>(_listaMaestraPlatillos);
-        ListaPlatillos.ItemsSource = CatalogoProductos;
-
-        // 3.  Conectamos el diseño del carrito con nuestra memoria global
         ListaCarrito.ItemsSource = CarritoGlobal.Articulos;
     }
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+
+        await CargarPlatillos();
+
+    }
+
+    private async Task CargarPlatillos()
+    {
+        try
+        {
+            var productos = await _controller.ObtenerPlatillos();
+
+            if (productos != null && productos.Any())
+            {
+                _listaMaestraPlatillos = productos.ToList();
+
+                ListaPlatillos.ItemsSource = _listaMaestraPlatillos;
+            }
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Error", "No pudimos traer el menú: " + ex.Message, "OK");
+
+        }
+
+    }
+
 
     async void AbrirCarrito(object sender, EventArgs e)
     {
@@ -77,22 +105,73 @@ public partial class MenuCliente : FlyoutPage
     }
     private void OnCategoriaTapped(object sender, TappedEventArgs e)
     {
-        // Extraemos la palabra clave que mandamos desde el XAML (ej. "Hamburguesas")
         string categoriaSeleccionada = e.Parameter.ToString();
+
+        ResetCategorias();
 
         if (categoriaSeleccionada == "Todo")
         {
-            // Si le pica a "Todo", regresamos la lista completa
+            FrameTodo.BackgroundColor = Color.FromArgb("#F5F3E9");
+            LblTodo.TextColor = Colors.Black;
+
             ListaPlatillos.ItemsSource = _listaMaestraPlatillos;
         }
-        else
+        else if (categoriaSeleccionada == "Entradas")
         {
-            // Filtramos usando LINQ: solo los platillos cuya sección coincida
-            var platillosFiltrados = _listaMaestraPlatillos
+            FrameEntradas.BackgroundColor = Color.FromArgb("#F5F3E9");
+            LblEntradas.TextColor = Colors.Black;
+        }
+        else if (categoriaSeleccionada == "Hamburguesas")
+        {
+            FrameHamburguesas.BackgroundColor = Color.FromArgb("#F5F3E9");
+            LblHamburguesas.TextColor = Colors.Black;
+        }
+        else if (categoriaSeleccionada == "Bebidas")
+        {
+            FrameBebidas.BackgroundColor = Color.FromArgb("#F5F3E9");
+            LblBebidas.TextColor = Colors.Black;
+        }
+
+        if (categoriaSeleccionada != "Todo")
+        {
+            ListaPlatillos.ItemsSource = _listaMaestraPlatillos
                 .Where(p => p.seccion == categoriaSeleccionada)
                 .ToList();
-
-            ListaPlatillos.ItemsSource = platillosFiltrados;
         }
     }
+
+    private void ResetCategorias()
+    {
+        FrameTodo.BackgroundColor = Color.FromArgb("#1E1E1E");
+        FrameEntradas.BackgroundColor = Color.FromArgb("#1E1E1E");
+        FrameHamburguesas.BackgroundColor = Color.FromArgb("#1E1E1E");
+        FrameBebidas.BackgroundColor = Color.FromArgb("#1E1E1E");
+
+        LblTodo.TextColor = Colors.White;
+        LblEntradas.TextColor = Colors.White;
+        LblHamburguesas.TextColor = Colors.White;
+        LblBebidas.TextColor = Colors.White;
+    }
+
+    private void OnEliminarItemCarrito_Invoked(object sender, EventArgs e)
+    {
+        var swipeItem = sender as SwipeItem;
+        var itemABorrar = swipeItem.CommandParameter as carrito;
+
+        if (itemABorrar != null)
+        {
+            CarritoGlobal.Articulos.Remove(itemABorrar);
+
+            ActualizarContador();
+        }
+    }
+
+    private void ActualizarContador()
+    {
+        int totalItems = CarritoGlobal.Articulos.Sum(i => i.Cantidad);
+
+        LblContadorCarrito.Text = totalItems.ToString();
+
+    }
+
 }

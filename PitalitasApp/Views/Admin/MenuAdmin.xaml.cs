@@ -7,6 +7,9 @@ namespace PitalitasApp;
 
 public partial class MenuAdmin : FlyoutPage
 {
+    private List<Producto> _listaMaestraPlatillos = new();
+    // Aquí guardaremos los platillos que se mostrarán en la pantalla
+    public ObservableCollection<Producto> CatalogoProductos { get; set; } = new();
 
     private readonly PlatillosController _controller = new PlatillosController();
 
@@ -78,7 +81,7 @@ public partial class MenuAdmin : FlyoutPage
 
         {
 
-            await DisplayAlert("Error", "No pudimos traer el men�: " + ex.Message, "OK");
+            await DisplayAlert("Error", "No pudimos traer el menú: " + ex.Message, "OK");
 
         }
 
@@ -93,23 +96,17 @@ public partial class MenuAdmin : FlyoutPage
 
 
         if (productoSeleccionado != null)
-
         {
-            // 1. Buscamos si el platillo ya está en el carrito
             var itemExistente = carrito.FirstOrDefault(x => x.Producto.id == productoSeleccionado.id);
             if (itemExistente != null)
             {
-                // Si ya existe, solo le sumamos 1 a la cantidad
                 itemExistente.Cantidad++;
 
-                // TRUCO MAUI: Para que la pantalla note el cambio de cantidad, 
-                // a veces hay que "refrescar" el elemento en la lista.
                 var index = carrito.IndexOf(itemExistente);
                 carrito[index] = itemExistente;
             }
             else
             {
-                // Si es un platillo nuevo, lo agregamos a la lista
                 carrito.Add(new carrito
                 {
                     Producto = productoSeleccionado,
@@ -117,13 +114,82 @@ public partial class MenuAdmin : FlyoutPage
                 });
             }
 
-            // 2. Actualizamos el globito rojo sumando TODAS las cantidades
-            // (No solo la cantidad de items diferentes, sino el total de platillos)
             int totalArticulos = carrito.Sum(x => x.Cantidad);
             LblContadorCarrito.Text = totalArticulos.ToString();
         
 
         }
+
+    }
+
+    private void OnCategoriaTapped(object sender, TappedEventArgs e)
+    {
+        string categoriaSeleccionada = e.Parameter.ToString();
+
+        ResetCategorias();
+
+        if (categoriaSeleccionada == "Todo")
+        {
+            FrameTodoA.BackgroundColor = Color.FromArgb("#F5F3E9");
+            LblTodoA.TextColor = Colors.Black;
+
+            ListaPlatillos.ItemsSource = _listaMaestraPlatillos;
+        }
+        else if (categoriaSeleccionada == "Entradas")
+        {
+            FrameEntradasA.BackgroundColor = Color.FromArgb("#F5F3E9");
+            LblEntradasA.TextColor = Colors.Black;
+        }
+        else if (categoriaSeleccionada == "Hamburguesas")
+        {
+            FrameHamburguesasA.BackgroundColor = Color.FromArgb("#F5F3E9");
+            LblHamburguesasA.TextColor = Colors.Black;
+        }
+        else if (categoriaSeleccionada == "Bebidas")
+        {
+            FrameBebidasA.BackgroundColor = Color.FromArgb("#F5F3E9");
+            LblBebidasA.TextColor = Colors.Black;
+        }
+
+        if (categoriaSeleccionada != "Todo")
+        {
+            ListaPlatillos.ItemsSource = _listaMaestraPlatillos
+                .Where(p => p.seccion == categoriaSeleccionada)
+                .ToList();
+        }
+    }
+
+    void ResetCategorias()
+    {
+        FrameTodoA.BackgroundColor = Color.FromArgb("#1E1E1E");
+        FrameEntradasA.BackgroundColor = Color.FromArgb("#1E1E1E");
+        FrameHamburguesasA.BackgroundColor = Color.FromArgb("#1E1E1E");
+        FrameBebidasA.BackgroundColor = Color.FromArgb("#1E1E1E");
+
+        LblTodoA.TextColor = Colors.White;
+        LblEntradasA.TextColor = Colors.White;
+        LblHamburguesasA.TextColor = Colors.White;
+        LblBebidasA.TextColor = Colors.White;
+    }
+
+    private void OnEliminarItemCarrito_Invoked(object sender, EventArgs e)
+    {
+        var swipeItem = sender as SwipeItem;
+        var itemABorrar = swipeItem.CommandParameter as carrito;
+
+        if (itemABorrar != null)
+        {
+            CarritoGlobal.Articulos.Remove(itemABorrar);
+
+            ActualizarContador();
+        }
+    }
+
+    private void ActualizarContador()
+    {
+        int totalItems = CarritoGlobal.Articulos.Sum(i => i.Cantidad);
+
+        LblContadorCarrito.Text = totalItems.ToString();
 
     }
 
