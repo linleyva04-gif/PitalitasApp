@@ -21,76 +21,53 @@
 
         <!-- frames para clientes -->
 
-        <CollectionView Grid.Row="2">
-            <CollectionView.ItemsSource>
-                <x:Array Type="{x:Type x:String}">
-                    <x:String>1</x:String>
-                    <x:String>2</x:String>
-                    <x:String>2</x:String>
-                </x:Array>
-            </CollectionView.ItemsSource>
+        <CollectionView x:Name="ListaPlatillos" Grid.Row="3">
+
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Span="2"
+                         Orientation="Vertical"
+                         HorizontalItemSpacing="10"
+                         VerticalItemSpacing="10"/>
+            </CollectionView.ItemsLayout>
 
             <CollectionView.ItemTemplate>
-
                 <DataTemplate>
-                    <Grid ColumnDefinitions="*,*">
-                        <VerticalStackLayout HorizontalOptions="Center" Grid.Column="0">
-                            <Frame BackgroundColor="#1E1E1E"
-                                 CornerRadius="15"
-                                 Padding="15"
-                                 Margin="0,5"                    
-                                 BorderColor="#0A0A0A"
-                                WidthRequest="200"
-                                HeightRequest="250">
+                    <Frame BackgroundColor="#F5F3E9"
+                   CornerRadius="22"
+                   Padding="18"
+                   BorderColor="#00000000"
+                   WidthRequest="160"
+                   HasShadow="True">
 
+                        <Frame.Shadow>
+                            <Shadow Brush="#000000" Opacity="0.6" Radius="18" Offset="0,8"/>
+                        </Frame.Shadow>
 
-                                <VerticalStackLayout Spacing="10">
+                        <VerticalStackLayout Spacing="12">
+                            <Image Source="burger.png" HeightRequest="100" HorizontalOptions="Center"/>
 
-                                    <Image Source="burger.png"
-                                         HeightRequest="100"
-                                         WidthRequest="100"/>
+                            <VerticalStackLayout Spacing="2">
+                                <Label Text="{Binding nombre}" FontAttributes="Bold" FontSize="15" TextColor="Black"/>
+                                <Label Text="{Binding descripcion}" FontSize="12" TextColor="#9A9A9A"/>
+                            </VerticalStackLayout>
 
-                                    <VerticalStackLayout>
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Text="{Binding precio, StringFormat='${0:F2}'}" FontSize="16" FontAttributes="Bold" TextColor="#FF6A00"/>
 
-                                        <Label Text="Hamburguesa clásica"
-                                             FontAttributes="Bold"
-                                             TextColor="White"
-                                             FontSize="16"/>
-
-                                        <Label Text="Carne, queso, lechuga"
-                                             TextColor="#B0B0B0"
-                                             FontSize="12"/>
-
-                                        <Label Text="$120"
-                                             TextColor="#FF0000"
-                                             FontAttributes="Bold"/>
-
-                                    </VerticalStackLayout>
-
-                                    <Button BackgroundColor="#1E1E1E"
-                                          Text="+"
-                                          TextColor="#FF0000"
-                                          FontSize="Large"
-                                          FontAttributes="Bold" 
-                                          Margin="10,0,0,0"
-                                          WidthRequest="50"
-                                          HeightRequest="50"
-                                          CornerRadius="30"/>
-
-                                </VerticalStackLayout>
-
-
-                            </Frame>
-
-
+                                <Button Grid.Column="1"
+                                Clicked="OnAgregarAlCarrito_Clicked"
+                                Text="+"
+                                FontSize="18"
+                                FontAttributes="Bold"
+                                TextColor="White"
+                                BackgroundColor="#FF6A00"
+                                WidthRequest="36"
+                                HeightRequest="36"
+                                CornerRadius="15"/>
+                            </Grid>
                         </VerticalStackLayout>
-
-                    </Grid>
-
-
-
+                    </Frame>
                 </DataTemplate>
-
             </CollectionView.ItemTemplate>
         </CollectionView>
 

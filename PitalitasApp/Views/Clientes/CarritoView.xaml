@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PitalitasApp.Views.Clientes.CarritoView"
+             Title="Tu Pedido"
+             BackgroundColor="#181818">
+
+    <Grid RowDefinitions="Auto, *, Auto" Padding="20" RowSpacing="20">
+
+        <Label Grid.Row="0" Text="Resumen de tu pedido" FontSize="24" FontAttributes="Bold" TextColor="White" />
+
+        <CollectionView x:Name="ListaCarrito" Grid.Row="1">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame BackgroundColor="#2A2A2A" CornerRadius="15" Padding="15" Margin="0,0,0,15" BorderColor="Transparent">
+                        <Grid ColumnDefinitions="Auto, *, Auto, Auto" ColumnSpacing="15" VerticalOptions="Center">
+
+                            <Image Grid.Column="0" Source="burger.png" HeightRequest="50" WidthRequest="50" />
+
+                            <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                <Label Text="{Binding Producto.nombre}" TextColor="White" FontAttributes="Bold" FontSize="14" />
+                                <Label Text="{Binding Producto.precio, StringFormat='${0:F2} c/u'}" TextColor="#9A9A9A" FontSize="12" />
+                            </VerticalStackLayout>
+
+                            <Frame Grid.Column="2" BackgroundColor="#1E1E1E" CornerRadius="10" Padding="10,5" BorderColor="Transparent">
+                                <Label Text="{Binding Cantidad, StringFormat='x{0}'}" TextColor="White" FontAttributes="Bold" VerticalOptions="Center" />
+                            </Frame>
+
+                            <Label Grid.Column="3" Text="{Binding Subtotal, StringFormat='${0:F2}'}" TextColor="#FF6A00" FontAttributes="Bold" FontSize="16" VerticalOptions="Center" />
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Frame Grid.Row="2" BackgroundColor="#2A2A2A" CornerRadius="20" Padding="20" BorderColor="Transparent">
+            <VerticalStackLayout Spacing="15">
+
+                <Grid ColumnDefinitions="*, Auto">
+                    <Label Grid.Column="0" Text="Total a Pagar:" TextColor="White" FontSize="18" VerticalOptions="Center" />
+                    <Label Grid.Column="1" x:Name="LabelTotal" Text="$0.00" TextColor="#FF6A00" FontSize="22" FontAttributes="Bold" />
+                </Grid>
+
+                <Button Text="Proceder al Pago"
+                        BackgroundColor="#FF6A00"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        CornerRadius="15"
+                        HeightRequest="50"
+                        Clicked="OnPagar_Clicked" />
+            </VerticalStackLayout>
+        </Frame>
+
+    </Grid>
+</ContentPage>
