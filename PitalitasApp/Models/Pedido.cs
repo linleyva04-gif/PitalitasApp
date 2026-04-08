@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Supabase.Postgrest.Attributes;
+using Supabase.Postgrest.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace PitalitasApp.Models
 {
-    public class Pedido
+    [Table("pedidos")]
+    public class Pedido : BaseModel
     {
-        public int IdPedido { get; set; }
-        public int IdCliente { get; set; }
-        public DateTime FechaPedido { get; set; }
-        public double Total {  get; set; }
-        public string TipoPago { get; set; }
-        public string Estatus {  get; set; }
-        public string Comentario { get; set; }
-
-
+        [PrimaryKey("id", false)]
+        public int id { get; set; }
+        public int id_cliente { get; set; }
+        public DateTime fecha { get; set; }
+        public double total {  get; set; }
+        public string tipo_pago { get; set; }
+        public string estado {  get; set; }
+        public string comentario { get; set; }
     }
 }

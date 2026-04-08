@@ -78,25 +78,40 @@
             </Border>
 
             <Border Stroke="#C9C7BD"
-                StrokeThickness="2"
-                StrokeDashArray="6,4"
-                BackgroundColor="Transparent"
-                HeightRequest="250"
-                StrokeShape="RoundRectangle 30">
+                    StrokeThickness="2"
+                    StrokeDashArray="6,4"
+                    BackgroundColor="Transparent"
+                    HeightRequest="250"
+                    StrokeShape="RoundRectangle 30"
+                    Margin="0,0,0,20">
 
-                <!--<Border.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnSelectImageTapped" />
-                </Border.GestureRecognizers>-->
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="SelectImageTapped_Clicked" />
+                </Border.GestureRecognizers>
 
-                <VerticalStackLayout VerticalOptions="Center" Spacing="10">
-                    <Image Source="plusote.png"
-                       HeightRequest="80"
-                       HorizontalOptions="Center"/>
-                    <Label Text="Subir imagen"
-                       HorizontalOptions="Center"
-                       TextColor="#C9C7BD"
-                       FontSize="16"/>
-                </VerticalStackLayout>
+                <Grid>
+                    <VerticalStackLayout x:Name="PlaceholderStack" 
+                                     VerticalOptions="Center" 
+                                     Spacing="10">
+                        <Image Source="plusote.png"
+                           HeightRequest="80"
+                           HorizontalOptions="Center"/>
+                        <Label Text="Subir imagen"
+                           HorizontalOptions="Center"
+                           TextColor="#C9C7BD"
+                           FontSize="16"/>
+                    </VerticalStackLayout>
+
+                    <Image x:Name="ImgPreview" 
+                       Aspect="AspectFill"
+                       IsVisible="False"
+                       HeightRequest="250"
+                       HorizontalOptions="Fill">
+                        <Image.Clip>
+                            <RoundRectangleGeometry CornerRadius="30" Rect="0,0,1000,250"/>
+                        </Image.Clip>
+                    </Image>
+                </Grid>
             </Border>
         </VerticalStackLayout>
 

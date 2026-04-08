@@ -15,6 +15,28 @@ namespace PitalitasApp.Controllers
             _supabase = Login.GetClient();
         }
 
+        //metodo para subir imagen a supabase
+        public async Task<string> SubirImagen(Stream stream, string fileName)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                await stream.CopyToAsync(memoryStream);
+                byte[] fileBytes = memoryStream.ToArray();
+
+                await _supabase.Storage
+                    .From("platillos")
+                    .Upload(fileBytes, fileName, new Supabase.Storage.FileOptions
+                    {
+                        Upsert = true,
+                        ContentType = "image/jpeg"
+                    });
+            }
+
+            return _supabase.Storage
+                .From("platillos")
+                .GetPublicUrl(fileName);
+        }
+
         //esto se usa en el Alta view para agregar platillos
         public async Task AgregarPlatillo(Producto platillo)
         {

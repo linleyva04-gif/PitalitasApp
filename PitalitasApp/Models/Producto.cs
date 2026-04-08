@@ -17,5 +17,8 @@ namespace PitalitasApp.Models
         public string descripcion { get; set; }
         public double precio { get; set; }
         public string seccion { get; set; }
+
+        [Column("imagen")]
+        public string imagen_url { get; set; }
     }
 }

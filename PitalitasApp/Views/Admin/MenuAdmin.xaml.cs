@@ -60,40 +60,34 @@ public partial class MenuAdmin : FlyoutPage
     private async Task CargarPlatillos()
     {
         try
-
         {
-
             var productos = await _controller.ObtenerPlatillos();
 
-
-
             if (productos != null && productos.Any())
-
             {
+                _listaMaestraPlatillos = productos.ToList(); // ← IMPORTANTE
 
-                ListaPlatillos.ItemsSource = productos;
+                CatalogoProductos.Clear();
 
+                foreach (var p in productos)
+                {
+                    CatalogoProductos.Add(p);
+                }
+
+                ListaPlatillos.ItemsSource = CatalogoProductos;
             }
-
         }
-
         catch (Exception ex)
-
         {
-
             await DisplayAlert("Error", "No pudimos traer el menú: " + ex.Message, "OK");
-
         }
-
     }
 
-    private void OnAgregarAlCarritoClicked(object sender, EventArgs e)
+    private void OnAgregarAlCarrito_Clicked(object sender, EventArgs e)
     {
         var button = (Button)sender;
 
         var productoSeleccionado = (Producto)button.CommandParameter;
-
-
 
         if (productoSeleccionado != null)
         {
@@ -115,6 +109,7 @@ public partial class MenuAdmin : FlyoutPage
             }
 
             int totalArticulos = carrito.Sum(x => x.Cantidad);
+            ActualizarTotal();
             LblContadorCarrito.Text = totalArticulos.ToString();
         
 
@@ -181,6 +176,7 @@ public partial class MenuAdmin : FlyoutPage
         {
             CarritoGlobal.Articulos.Remove(itemABorrar);
 
+            ActualizarTotal();
             ActualizarContador();
         }
     }
@@ -191,6 +187,43 @@ public partial class MenuAdmin : FlyoutPage
 
         LblContadorCarrito.Text = totalItems.ToString();
 
+    }
+
+    private async void RealizarPedido_Clicked(object sender, EventArgs e)
+    {
+        try
+        {
+            double totalCarrito = carrito.Sum(x => x.Producto.precio * x.Cantidad);
+
+            var pedido = new Pedido
+            {
+                id_cliente = 1,
+                fecha = DateTime.Now,
+                total = totalCarrito,
+                tipo_pago = PickerMetodoPago.SelectedItem?.ToString(),
+                estado = "Pendiente",
+                comentario = EditorComentario.Text
+            };
+
+            var controller = new PedidosController();
+
+            await controller.CrearPedido(pedido);
+
+            await DisplayAlert("Pedido", "Pedido realizado correctamente", "OK");
+
+            carrito.Clear();
+            LblContadorCarrito.Text = "0";
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Error", ex.Message, "OK");
+        }
+    }
+
+    void ActualizarTotal()
+    {
+        double total = carrito.Sum(i => i.Subtotal);
+        LblTotal.Text = $"${total:F2}";
     }
 
 }

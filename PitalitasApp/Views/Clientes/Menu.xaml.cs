@@ -81,6 +81,7 @@ public partial class MenuCliente : FlyoutPage
         var boton = (Button)sender;
         var productoSeleccionado = (Producto)boton.BindingContext;
 
+
         var itemExistente = CarritoGlobal.Articulos.FirstOrDefault(x => x.Producto.id == productoSeleccionado.id);
 
         if (itemExistente != null)
@@ -100,8 +101,10 @@ public partial class MenuCliente : FlyoutPage
             });
         }
 
-        // Actualizamos el número en la burbuja naranja 
+        // Actualizamos el número en la burbuja naranja y el total
         LblContadorCarrito.Text = CarritoGlobal.Articulos.Sum(x => x.Cantidad).ToString();
+        ActualizarTotal();
+
     }
     private void OnCategoriaTapped(object sender, TappedEventArgs e)
     {
@@ -161,7 +164,7 @@ public partial class MenuCliente : FlyoutPage
         if (itemABorrar != null)
         {
             CarritoGlobal.Articulos.Remove(itemABorrar);
-
+            ActualizarTotal();
             ActualizarContador();
         }
     }
@@ -172,6 +175,43 @@ public partial class MenuCliente : FlyoutPage
 
         LblContadorCarrito.Text = totalItems.ToString();
 
+    }
+
+
+    private async void RealizarPedido_Clicked(object sender, EventArgs e)
+    {
+        try
+        {
+            double totalCarrito = CarritoGlobal.Articulos.Sum(x => x.Producto.precio * x.Cantidad);
+            var pedido = new Pedido
+            {
+                id_cliente = 1,
+                fecha = DateTime.Now,
+                total = totalCarrito,
+                tipo_pago = "Efectivo",
+                estado = "Pendiente",
+                comentario = ""
+            };
+
+            var controller = new PedidosController();
+
+            await controller.CrearPedido(pedido);
+
+            await DisplayAlert("Pedido", "Pedido realizado correctamente", "OK");
+
+            carrito.Clear();
+            LblContadorCarrito.Text = "0";
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Error", ex.Message, "OK");
+        }
+    }
+
+    void ActualizarTotal()
+    {
+        double total = carrito.Sum(i => i.Subtotal);
+        LblTotal.Text = $"${total:F2}";
     }
 
 }

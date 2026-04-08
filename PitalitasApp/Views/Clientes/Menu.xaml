@@ -87,7 +87,19 @@
                                         </Frame.Shadow>
 
                                         <VerticalStackLayout Spacing="12">
-                                            <Image Source="burger.png" HeightRequest="100" HorizontalOptions="Center"/>
+                                            <Frame Padding="0"
+                                                   CornerRadius="20"
+                                                   IsClippedToBounds="True"
+                                                   HasShadow="False"
+                                                   HorizontalOptions="Center"   
+                                                   BorderColor="#F5F3E9">
+
+                                                <Image Source="{Binding imagen_url}"
+                                                       HeightRequest="120"
+                                                       WidthRequest="120"
+                                                       Aspect="AspectFill"/>            
+
+                                            </Frame>
                                             <VerticalStackLayout Spacing="2">
                                                 <Label Text="{Binding nombre}" FontAttributes="Bold" FontSize="15" TextColor="Black"/>
                                                 <Label Text="{Binding descripcion}" FontSize="12" TextColor="#9A9A9A" MaxLines="2" LineBreakMode="TailTruncation"/>
@@ -107,7 +119,7 @@
                         <Grid HorizontalOptions="End" VerticalOptions="End" Margin="20">
                             <Button WidthRequest="60" HeightRequest="60" CornerRadius="30" 
                                     BackgroundColor="#F2F0E6" ImageSource="carrillo.png"
-                                    Clicked="AbrirCarrito"/>
+                                    Clicked="AbrirCarrito" BorderColor="#FF6A00"/>
                             <Frame BackgroundColor="#FF6A00" CornerRadius="10" HeightRequest="20" WidthRequest="20" 
                                    Padding="0" HorizontalOptions="End" VerticalOptions="Start" 
                                    TranslationX="5" TranslationY="-5" InputTransparent="True">
@@ -166,10 +178,24 @@
                                         </DataTemplate>
                                     </CollectionView.ItemTemplate>
                                 </CollectionView>
+                                
+
 
                                 <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
-                                    <Button Grid.Column="0" Text="Realizar" BackgroundColor="#F5F3E9" TextColor="#FF6A00" CornerRadius="20" HeightRequest="60"  ImageSource="check.png" ContentLayout="Rigth, 10"/>
-                                    <Button Grid.Column="1" Text="Cerrar" Clicked="CerrarCarrito" BackgroundColor="#F5F3E9" TextColor="#FF6A00" CornerRadius="20" HeightRequest="60"  ImageSource="cancel.png" ContentLayout="Rigth, 10"/>
+                                    <Label Text="Total:"
+                                            FontSize="18"
+                                            FontAttributes="Bold"
+                                            TextColor="White"/>
+
+                                    <Label x:Name="LblTotal"
+                                           Grid.Column="1"
+                                           Text="$0.00"
+                                           FontSize="18"
+                                           FontAttributes="Bold"
+                                           TextColor="#FF6A00"/>
+                                    
+                                    <Button Grid.Column="0" Text="Realizar" BackgroundColor="#F5F3E9" TextColor="#FF6A00" CornerRadius="20" HeightRequest="60"  ImageSource="check.png" ContentLayout="Left, 10" Clicked="RealizarPedido_Clicked"/>
+                                    <Button Grid.Column="1" Text="Cerrar" Clicked="CerrarCarrito" BackgroundColor="#F5F3E9" TextColor="#FF6A00" CornerRadius="20" HeightRequest="60"  ImageSource="cancel.png" ContentLayout="Left, 10"/>
                                 </Grid>
                             </VerticalStackLayout>
                         </Frame>
