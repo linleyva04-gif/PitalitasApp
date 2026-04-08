@@ -2,16 +2,16 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:PitalitasApp"
-             x:Class="PitalitasApp.contentFlyout"
+             x:Class="PitalitasApp.Views.Clientes.contentFlyoutCliente"
              BackgroundColor="#121212" 
-             Title="Menu Lateral">
+             Title="Menu Lateral Cliente">
 
     <Grid RowDefinitions="Auto, *">
 
         <VerticalStackLayout Grid.Row="0" Padding="30,40,30,20" Spacing="10">
             <Image Source="pitahaya.png" HeightRequest="60" HorizontalOptions="Start" />
             <Label Text="Pitalitas App" FontSize="22" FontAttributes="Bold" TextColor="White" />
-            <Label Text="Administrador" FontSize="14" TextColor="Gray" />
+            <Label Text="Cliente" FontSize="14" TextColor="Gray" />
         </VerticalStackLayout>
 
         <CollectionView Grid.Row="1"
@@ -44,10 +44,7 @@
                         <Image Source="{Binding IconSource}" 
                                HeightRequest="22" 
                                WidthRequest="22"
-                               VerticalOptions="Center">
-                            <Image.Behaviors>
-                            </Image.Behaviors>
-                        </Image>
+                               VerticalOptions="Center" />
 
                         <Label Grid.Column="1"
                                Margin="15,0"
@@ -58,16 +55,22 @@
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
-
-            <CollectionView.ItemsSource>
-                <x:Array Type="{x:Type local:FlyoutPageItem}">
-                    <local:FlyoutPageItem Title="Menú" IconSource="menu.png" />
-                    <local:FlyoutPageItem Title="Dar de alta platillo" IconSource="food.png" />
-                    <local:FlyoutPageItem Title="Clientes" IconSource="customer.png" />
-                    <local:FlyoutPageItem Title="Reportes pedidos" IconSource="report.png" />
-                    <local:FlyoutPageItem Title="Configuración" IconSource="settings.png" />
-                </x:Array>
-            </CollectionView.ItemsSource>
         </CollectionView>
+        <VerticalStackLayout Grid.Row="2" Padding="20,0,20,30" VerticalOptions="End">
+            <Frame BackgroundColor="#2A1515" 
+                   BorderColor="#FF3B30" 
+                   CornerRadius="15" 
+                   Padding="15"
+                   HasShadow="False">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnCerrarSesion_Tapped" />
+                </Frame.GestureRecognizers>
+
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+                    <Image Source="cancel.png" HeightRequest="20" WidthRequest="20" />
+                    <Label Text="Cerrar Sesión" TextColor="#FF3B30" FontAttributes="Bold" FontSize="16" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+            </Frame>
+        </VerticalStackLayout>
     </Grid>
 </ContentPage>

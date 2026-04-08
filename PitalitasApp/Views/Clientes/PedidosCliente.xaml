@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PitalitasApp.Views.Clientes.PedidosCliente"
+             Title="Mis Pedidos"
+             BackgroundColor="#181818">
+
+    <Grid RowDefinitions="Auto, *">
+
+        <VerticalStackLayout Grid.Row="0" Padding="20" Spacing="5">
+            <Label Text="Tus Pedidos" 
+                   TextColor="White" 
+                   FontSize="28" 
+                   FontAttributes="Bold" />
+            <Label Text="Sigue el estado de tu comida en tiempo real." 
+                   TextColor="#9A9A9A" 
+                   FontSize="14" />
+        </VerticalStackLayout>
+
+        <CollectionView x:Name="ListaPedidos" 
+                        Grid.Row="1" 
+                        Margin="20,0,20,20">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+
+                    <Frame BackgroundColor="#2A2A2A" 
+                           CornerRadius="15" 
+                           BorderColor="Transparent" 
+                           Padding="15"
+                           Margin="0,0,0,15"
+                           HasShadow="True">
+
+                        <VerticalStackLayout Spacing="10">
+
+                            <Grid ColumnDefinitions="*, Auto">
+                                <Label Text="{Binding Folio, StringFormat='Orden #{0}'}" 
+                                       TextColor="White" 
+                                       FontAttributes="Bold" 
+                                       FontSize="16" />
+
+                                <Frame Grid.Column="1" 
+                                       BackgroundColor="#FF6A00" 
+                                       CornerRadius="10" 
+                                       Padding="8,4" 
+                                       HasShadow="False">
+                                    <Label Text="{Binding Estatus}" 
+                                           TextColor="White" 
+                                           FontSize="12" 
+                                           FontAttributes="Bold"/>
+                                </Frame>
+                            </Grid>
+
+                            <BoxView HeightRequest="1" Color="#3D3D3D" Margin="0,5"/>
+
+                            <Label Text="{Binding DescripcionResumen}" 
+                                   TextColor="#9A9A9A" 
+                                   FontSize="13" 
+                                   MaxLines="2" 
+                                   LineBreakMode="TailTruncation" />
+
+                            <Grid ColumnDefinitions="*, Auto" Margin="0,5,0,0">
+                                <Label Text="{Binding Fecha, StringFormat='{0:dd MMM HH:mm}'}" 
+                                       TextColor="Gray" 
+                                       FontSize="12" 
+                                       VerticalOptions="Center" />
+
+                                <Label Grid.Column="1" 
+                                       Text="{Binding Total, StringFormat='${0:F2}'}" 
+                                       TextColor="#FF6A00" 
+                                       FontAttributes="Bold" 
+                                       FontSize="18" />
+                            </Grid>
+
+                        </VerticalStackLayout>
+                    </Frame>
+
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+
+</ContentPage>

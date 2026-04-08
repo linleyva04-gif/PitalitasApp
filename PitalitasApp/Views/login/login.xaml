@@ -31,10 +31,6 @@
 
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer Tapped="OnGoogleLoginClicked" />
-
-                    <PointerGestureRecognizer 
-                        PointerEntered="OnPointerEntered"
-                        PointerExited="OnPointerExited"/>
                 </Border.GestureRecognizers>
 
                 <HorizontalStackLayout HorizontalOptions="Center" Spacing="15">

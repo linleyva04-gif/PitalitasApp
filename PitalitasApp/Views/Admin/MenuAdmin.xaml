@@ -8,7 +8,7 @@
             Title="Menú">
 
     <FlyoutPage.Flyout>
-        <local:contentFlyout x:Name="flyoutPage"/>
+        <local:contentFlyoutAdmin x:Name="flyoutPage"/>
     </FlyoutPage.Flyout>
 
     <FlyoutPage.Detail>
