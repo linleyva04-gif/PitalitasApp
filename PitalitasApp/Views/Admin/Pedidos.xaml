@@ -2,11 +2,74 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PitalitasApp.Views.Admin.Pedidos"
-             Title="Pedidos">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="Pedidos"
+             xmlns:syncfusion="clr-namespace:Syncfusion.Maui.DataGrid;assembly=Syncfusion.Maui.DataGrid">
+    <syncfusion:SfDataGrid x:Name="dataGridPedidos"
+                       ItemsSource="{Binding ListaPedidos}"
+                       AutoGenerateColumnsMode="None"
+                       GridLinesVisibility="None"
+                       HeaderGridLinesVisibility="None"
+                       SelectionMode="Single"
+                       ColumnWidthMode="Fill"
+                       BackgroundColor="Transparent"
+                       RowHeight="70"
+                       HeaderRowHeight="45">
+
+        <syncfusion:SfDataGrid.DefaultStyle>
+            <syncfusion:DataGridStyle 
+            RowBackground="#1A1A1A"
+            RowTextColor="White"
+            HeaderRowBackground="Transparent"
+            HeaderRowTextColor="#BDBDBD"
+            SelectionBackground="#2A2A2A"
+            GridLineColor="Transparent"/>
+        </syncfusion:SfDataGrid.DefaultStyle>
+
+        <syncfusion:SfDataGrid.Columns>
+
+            <syncfusion:DataGridTextColumn 
+            MappingName="fecha" 
+            HeaderText="Fecha"
+            Width="120"/>
+
+            <syncfusion:DataGridTemplateColumn 
+            MappingName="estado" 
+            HeaderText="Estado">
+
+                <syncfusion:DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+
+                        <Frame BackgroundColor="#262626"
+                           CornerRadius="14"
+                           Padding="8"
+                           Margin="10,6"
+                           HasShadow="False"
+                           BorderColor="#333">
+
+                            <Picker SelectedItem="{Binding estado}"
+                                TextColor="#FF6A00"
+                                FontAttributes="Bold"
+                                FontSize="13"
+                                HorizontalOptions="Center"
+                                SelectedIndexChanged="OnEstadoChanged">
+
+                                <Picker.Items>
+                                    <x:String>Pendiente</x:String>
+                                    <x:String>En preparación</x:String>
+                                    <x:String>En camino</x:String>
+                                    <x:String>Entregado</x:String>
+                                </Picker.Items>
+
+                            </Picker>
+
+                        </Frame>
+
+                    </DataTemplate>
+                </syncfusion:DataGridTemplateColumn.CellTemplate>
+
+            </syncfusion:DataGridTemplateColumn>
+
+        </syncfusion:SfDataGrid.Columns>
+
+    </syncfusion:SfDataGrid>
 </ContentPage>

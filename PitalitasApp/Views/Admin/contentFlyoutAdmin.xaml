@@ -81,7 +81,7 @@
                         <models:FlyoutPageItem Title="Dar de alta platillo" IconSource="food.png" />
                         <models:FlyoutPageItem Title="Clientes" IconSource="customer.png" />
                         <models:FlyoutPageItem Title="Reportes pedidos" IconSource="report.png" />
-                    <models:FlyoutPageItem Title="Configuración" IconSource="settings.png" />
+                        <models:FlyoutPageItem Title="Pedidos" IconSource="settings.png" />
                 </x:Array>
             </CollectionView.ItemsSource>
         </CollectionView>

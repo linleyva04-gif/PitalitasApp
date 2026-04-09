@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "223161951296",
+    "project_id": "pitalitasapp-cdb72",
+    "storage_bucket": "pitalitasapp-cdb72.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:223161951296:android:9724c103b2340b847beba5",
+        "android_client_info": {
+          "package_name": "com.ndkbto.pitalitas"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJ1zKcS6kzvx887viYOUXC30qWOvvG-TI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

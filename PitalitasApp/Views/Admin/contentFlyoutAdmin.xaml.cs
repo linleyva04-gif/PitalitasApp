@@ -1,5 +1,6 @@
 using PitalitasApp.Admin;
 using PitalitasApp.Models;
+using PitalitasApp.Views.Admin;
 using PitalitasApp.Views.Clientes;
 
 namespace PitalitasApp;
@@ -36,8 +37,8 @@ public partial class contentFlyoutAdmin : ContentPage
                 pagina = new AltaView();
                 break;
 
-            case "Configuración":
-                pagina = new configuracionView();
+            case "Pedidos":
+                pagina = new Pedidos();
                 break;
 
         }
