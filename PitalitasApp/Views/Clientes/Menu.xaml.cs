@@ -7,9 +7,6 @@ namespace PitalitasApp;
 public partial class MenuCliente : FlyoutPage
 {
     private List<Producto> _listaMaestraPlatillos = new();
-    // Aquí guardaremos los platillos que se mostrarán en la pantalla
-    public ObservableCollection<Producto> CatalogoProductos { get; set; } = new();
-
 
 
     //uso de controlador de platillos
@@ -31,25 +28,35 @@ public partial class MenuCliente : FlyoutPage
 
         await CargarPlatillos();
 
+        // Refrescamos el carrito por si venimos de otra pantalla
+        LblContadorCarrito.Text = CarritoGlobal.Articulos.Sum(x => x.Cantidad).ToString();
+        ActualizarTotal();
     }
 
     private async Task CargarPlatillos()
     {
         try
         {
+            // Le pedimos los datos a Supabase usando el controlador de tu compañera
             var productos = await _controller.ObtenerPlatillos();
 
             if (productos != null && productos.Any())
             {
+                // Guardamos la lista completa para poder usar los filtros ("Entradas", "Bebidas", etc.) sin volver a descargar
                 _listaMaestraPlatillos = productos.ToList();
 
+                // Pintamos la lista en la pantalla
                 ListaPlatillos.ItemsSource = _listaMaestraPlatillos;
+
+                // Reiniciamos los filtros para que "Todo" esté seleccionado visualmente
+                ResetCategorias();
+                FrameTodo.BackgroundColor = Color.FromArgb("#F5F3E9");
+                LblTodo.TextColor = Colors.Black;
             }
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Error", "No pudimos traer el menú: " + ex.Message, "OK");
-
+            await DisplayAlert("Error de conexión", "No pudimos descargar el menú: " + ex.Message, "OK");
         }
 
     }
@@ -58,6 +65,7 @@ public partial class MenuCliente : FlyoutPage
     async void AbrirCarrito(object sender, EventArgs e)
     {
         await PanelCarrito.TranslateTo(0, 0, 300, Easing.SinOut);
+        await CargarDomiciliosCliente();
 
     }
     async void CerrarCarrito(object sender, EventArgs e)
@@ -180,37 +188,98 @@ public partial class MenuCliente : FlyoutPage
 
     private async void RealizarPedido_Clicked(object sender, EventArgs e)
     {
+        // 1. Validamos que hayan elegido el tipo de entrega
+        string tipoEntrega = PickerTipoEntrega.SelectedItem?.ToString();
+        if (string.IsNullOrEmpty(tipoEntrega))
+        {
+            await DisplayAlert("Aviso", "Por favor elige cómo quieres recibir tu pedido.", "OK");
+            return;
+        }
+
+        // 2. Si es a domicilio, validamos que hayan elegido una dirección
+        int? idDomicilioSeleccionado = null;
+        if (tipoEntrega == "Envío a domicilio")
+        {
+            var domicilioSeleccionado = PickerDireccion.SelectedItem as Domicilio;
+            if (domicilioSeleccionado == null)
+            {
+                await DisplayAlert("Aviso", "Por favor selecciona una dirección de entrega.", "OK");
+                return;
+            }
+            idDomicilioSeleccionado = domicilioSeleccionado.id;
+        }
+
         try
         {
+            var userController = new PitalitasApp.Controllers.Usuarios(Login.GetClient());
+            var usuarioActual = await userController.ObtenerUsuarioActual();
             double totalCarrito = CarritoGlobal.Articulos.Sum(x => x.Producto.precio * x.Cantidad);
+
             var pedido = new Pedido
             {
-                id_cliente = 1,
+                id_cliente = (int)usuarioActual.Id,
                 fecha = DateTime.Now,
                 total = totalCarrito,
-                tipo_pago = "Efectivo",
+                tipo_pago = PickerMetodoPago.SelectedItem?.ToString() ?? "Efectivo",
                 estado = "Pendiente",
-                comentario = ""
+                comentario = EditorComentario.Text,
+                tipo_entrega = tipoEntrega,               
+                id_domicilio = idDomicilioSeleccionado    
             };
 
-            var controller = new PedidosController();
-
+            var controller = new PitalitasApp.Controllers.PedidosController();
             await controller.CrearPedido(pedido);
 
-            await DisplayAlert("Pedido", "Pedido realizado correctamente", "OK");
+            await DisplayAlert("¡Listo!", "Tu pedido ha sido enviado a la cocina.", "Excelente");
 
-            carrito.Clear();
+            // Limpiamos todo
+            CarritoGlobal.Articulos.Clear();
             LblContadorCarrito.Text = "0";
+            ActualizarTotal();
+            PickerTipoEntrega.SelectedItem = null;
+            PickerDireccion.SelectedItem = null;
+            EditorComentario.Text = "";
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Error", ex.Message, "OK");
+            await DisplayAlert("Error", "Ocurrió un problema: " + ex.Message, "OK");
+        }
+    }
+    // Cargamos las direcciones para tenerlas listas en el Picker
+    private async Task CargarDomiciliosCliente()
+    {
+        var userController = new Usuarios(Login.GetClient());
+        var usuarioActual = await userController.ObtenerUsuarioActual();
+
+        if (usuarioActual != null)
+        {
+            var cliente = Login.GetClient();
+            var resultados = await cliente.From<Domicilio>()
+                .Where(x => x.id_usuario == (int)usuarioActual.Id)
+                .Get();
+
+            PickerDireccion.ItemsSource = resultados.Models;
+        }
+    }
+
+    // Este evento se dispara cuando eligen "Envío" o "Recoger"
+    private void OnTipoEntrega_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (PickerTipoEntrega.SelectedItem?.ToString() == "Envío a domicilio")
+        {
+            FrameDireccion.IsVisible = true; // Mostramos las direcciones
+        }
+        else
+        {
+            FrameDireccion.IsVisible = false; // Ocultamos
+            PickerDireccion.SelectedItem = null; // Limpiamos la selección
         }
     }
 
     void ActualizarTotal()
     {
-        double total = carrito.Sum(i => i.Subtotal);
+        // CORRECCIÓN: Sumamos desde CarritoGlobal
+        double total = CarritoGlobal.Articulos.Sum(i => i.Subtotal);
         LblTotal.Text = $"${total:F2}";
     }
 
