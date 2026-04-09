@@ -19,12 +19,14 @@ public partial class MenuAdmin : FlyoutPage
     {
         InitializeComponent();
 
-        ListaCarrito.ItemsSource = carrito;
+        ListaCarrito.ItemsSource = CarritoGlobal.Articulos;
     }
 
     async void AbrirCarrito(object sender, EventArgs e)
     {
         await PanelCarrito.TranslateTo(0, 0, 300, Easing.SinOut);
+        CargarDomiciliosCliente();
+
 
     }
     async void CerrarCarrito(object sender, EventArgs e)
@@ -38,13 +40,8 @@ public partial class MenuAdmin : FlyoutPage
         var item = e.CurrentSelection.FirstOrDefault() as FlyoutPageItem;
 
         if (item == null)
-
             return;
-
-
-
         Detail = new NavigationPage((Page)Activator.CreateInstance(item.TargetType));
-
         IsPresented = false;
 
     }
@@ -54,6 +51,10 @@ public partial class MenuAdmin : FlyoutPage
         base.OnAppearing();
 
         await CargarPlatillos();
+
+        // Refrescamos el carrito por si venimos de otra pantalla
+        LblContadorCarrito.Text = CarritoGlobal.Articulos.Sum(x => x.Cantidad).ToString();
+        ActualizarTotal();
 
     }
 
@@ -65,55 +66,47 @@ public partial class MenuAdmin : FlyoutPage
 
             if (productos != null && productos.Any())
             {
-                _listaMaestraPlatillos = productos.ToList(); // ← IMPORTANTE
+                _listaMaestraPlatillos = productos.ToList();
 
-                CatalogoProductos.Clear();
+                ListaPlatillos.ItemsSource = _listaMaestraPlatillos;
 
-                foreach (var p in productos)
-                {
-                    CatalogoProductos.Add(p);
-                }
-
-                ListaPlatillos.ItemsSource = CatalogoProductos;
+                ResetCategorias();
+                FrameTodoA.BackgroundColor = Color.FromArgb("#F5F3E9");
+                LblTodoA.TextColor = Colors.Black;
             }
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Error", "No pudimos traer el menú: " + ex.Message, "OK");
+            await DisplayAlert("Error de conexión", "No pudimos descargar el menú: " + ex.Message, "OK");
         }
+
     }
 
     private void OnAgregarAlCarrito_Clicked(object sender, EventArgs e)
     {
-        var button = (Button)sender;
+        var boton = (Button)sender;
+        var productoSeleccionado = (Producto)boton.BindingContext;
 
-        var productoSeleccionado = (Producto)button.CommandParameter;
+        var itemExistente = CarritoGlobal.Articulos.FirstOrDefault(x => x.Producto.id == productoSeleccionado.id);
 
-        if (productoSeleccionado != null)
+        if (itemExistente != null)
         {
-            var itemExistente = carrito.FirstOrDefault(x => x.Producto.id == productoSeleccionado.id);
-            if (itemExistente != null)
-            {
-                itemExistente.Cantidad++;
+            itemExistente.Cantidad++;
 
-                var index = carrito.IndexOf(itemExistente);
-                carrito[index] = itemExistente;
-            }
-            else
-            {
-                carrito.Add(new carrito
-                {
-                    Producto = productoSeleccionado,
-                    Cantidad = 1
-                });
-            }
-
-            int totalArticulos = carrito.Sum(x => x.Cantidad);
-            ActualizarTotal();
-            LblContadorCarrito.Text = totalArticulos.ToString();
-        
-
+            var index = CarritoGlobal.Articulos.IndexOf(itemExistente);
+            CarritoGlobal.Articulos[index] = itemExistente;
         }
+        else
+        {
+            CarritoGlobal.Articulos.Add(new carrito
+            {
+                Producto = productoSeleccionado,
+                Cantidad = 1
+            });
+        }
+
+        LblContadorCarrito.Text = CarritoGlobal.Articulos.Sum(x => x.Cantidad).ToString();
+        ActualizarTotal();
 
     }
 
@@ -191,34 +184,125 @@ public partial class MenuAdmin : FlyoutPage
 
     private async void RealizarPedido_Clicked(object sender, EventArgs e)
     {
+        var clienteSeleccionado = PickerCliente.SelectedItem as Usuario;
+        string tipoEntrega = PickerTipoEntrega.SelectedItem?.ToString();
+
+        if (clienteSeleccionado == null)
+        {
+            await DisplayAlert("Aviso", "Selecciona un cliente.", "OK"); return;
+        }
+        if (string.IsNullOrEmpty(tipoEntrega))
+        {
+            await DisplayAlert("Aviso", "Selecciona tipo de entrega.", "OK"); return;
+        }
+
+        int? idDireccionFinal = null;
+
+        if (tipoEntrega == "Envío a domicilio")
+        {
+            var direccionElegida = PickerDireccion.SelectedItem as Domicilio;
+            if (direccionElegida == null)
+            {
+                await DisplayAlert("Aviso", "Selecciona una dirección de entrega.", "OK");
+                return;
+            }
+            idDireccionFinal = direccionElegida.id;
+        }
+
         try
         {
-            double totalCarrito = carrito.Sum(x => x.Producto.precio * x.Cantidad);
-
             var pedido = new Pedido
             {
-                id_cliente = 1,
+                id_cliente = (int)clienteSeleccionado.Id, 
                 fecha = DateTime.Now,
-                total = totalCarrito,
-                tipo_pago = PickerMetodoPago.SelectedItem?.ToString(),
+                total = CarritoGlobal.Articulos.Sum(x => x.Subtotal),
+                tipo_pago = PickerMetodoPago.SelectedItem?.ToString() ?? "Efectivo",
                 estado = "Pendiente",
-                comentario = EditorComentario.Text
+                comentario = EditorComentario.Text + " (Admin)",
+                tipo_entrega = tipoEntrega,
+                id_domicilio = idDireccionFinal 
             };
 
             var controller = new PedidosController();
-
             await controller.CrearPedido(pedido);
 
-            await DisplayAlert("Pedido", "Pedido realizado correctamente", "OK");
+            await DisplayAlert("¡Éxito!", "Pedido creado correctamente.", "OK");
 
-            carrito.Clear();
-            LblContadorCarrito.Text = "0";
+            CarritoGlobal.Articulos.Clear();
+            ActualizarTotal();
+            ActualizarContador();
+            await PanelCarrito.TranslateTo(0, 800, 300, Easing.SinIn);
         }
         catch (Exception ex)
         {
             await DisplayAlert("Error", ex.Message, "OK");
         }
     }
+
+    private async void OnClienteSeleccionado_Changed(object sender, EventArgs e)
+    {
+        var clienteSeleccionado = PickerCliente.SelectedItem as Usuario;
+
+        if (clienteSeleccionado != null)
+        {
+            FrameDireccion.IsVisible = true;
+            PickerDireccion.ItemsSource = null;
+
+            try
+            {
+                var clienteSupabase = Login.GetClient();
+                var resultados = await clienteSupabase.From<Domicilio>()
+                    .Where(x => x.id_usuario == (int)clienteSeleccionado.Id)
+                    .Get();
+
+                PickerDireccion.ItemsSource = resultados.Models;
+
+                if (!resultados.Models.Any())
+                {
+                    await DisplayAlert("Aviso", "Este cliente no tiene direcciones registradas.", "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", "No se pudieron cargar las direcciones: " + ex.Message, "OK");
+            }
+        }
+    }
+
+    // en realidad aqui se cargan los clientes(nombres)
+    private async Task CargarDomiciliosCliente()
+    {
+        try
+        {
+            var clienteSupabase = Login.GetClient();
+
+            //poner en el picker solo a los usuarios con el rol de cliente omitiendo a los afmins
+            var resultados = await clienteSupabase.From<Usuario>()
+             .Where(x => x.rol == "cliente")
+             .Get();
+
+            PickerCliente.ItemsSource = resultados.Models;
+
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine("Error cargando clientes: " + ex.Message);
+        }
+    }
+
+    private void OnTipoEntrega_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (PickerTipoEntrega.SelectedItem?.ToString() == "Envío a domicilio")
+        {
+            FrameCliente.IsVisible = true; 
+        }
+        else
+        {
+            FrameCliente.IsVisible = false; 
+            PickerCliente.SelectedItem = null; 
+        }
+    }
+
 
     void ActualizarTotal()
     {

@@ -1,5 +1,6 @@
 using PitalitasApp.Admin;
 using PitalitasApp.Models;
+using PitalitasApp.Views.Clientes;
 
 namespace PitalitasApp;
 
@@ -8,6 +9,12 @@ public partial class contentFlyoutAdmin : ContentPage
     public contentFlyoutAdmin()
 	{
 		InitializeComponent();
+    }
+
+    private async void OnCerrarSesion_Tapped(object sender, TappedEventArgs e)
+    {
+        // Abrimos nuestra pantalla modal por encima de todo
+        await Navigation.PushModalAsync(new LogoutModal());
     }
 
     private void navMenu_SelectionChangedAdmin(object sender, SelectionChangedEventArgs e)

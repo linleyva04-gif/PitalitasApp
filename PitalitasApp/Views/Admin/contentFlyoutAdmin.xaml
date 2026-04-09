@@ -85,6 +85,22 @@
                 </x:Array>
             </CollectionView.ItemsSource>
         </CollectionView>
-    </Grid>
+            <VerticalStackLayout Grid.Row="2" Padding="20,0,20,30" VerticalOptions="End">
+                <Frame BackgroundColor="#2A1515" 
+                        BorderColor="#FF3B30" 
+                        CornerRadius="15" 
+                        Padding="15"
+                        HasShadow="False">  
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnCerrarSesion_Tapped" />
+                    </Frame.GestureRecognizers>
+
+                    <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+                        <Image Source="cancel.png" HeightRequest="20" WidthRequest="20" />
+                        <Label Text="Cerrar Sesión" TextColor="#FF3B30" FontAttributes="Bold" FontSize="16" VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+                </Frame>
+            </VerticalStackLayout>
+        </Grid>
     </Border>
 </ContentPage>

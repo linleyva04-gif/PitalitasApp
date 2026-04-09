@@ -61,7 +61,7 @@
                    BorderColor="#FF3B30" 
                    CornerRadius="15" 
                    Padding="15"
-                   HasShadow="False">
+                   HasShadow="False"> 
                 <Frame.GestureRecognizers>
                     <TapGestureRecognizer Tapped="OnCerrarSesion_Tapped" />
                 </Frame.GestureRecognizers>
