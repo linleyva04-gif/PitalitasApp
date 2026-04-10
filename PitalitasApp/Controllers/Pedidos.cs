@@ -23,22 +23,25 @@ namespace PitalitasApp.Controllers
             try
             {
                 await _supabase.From<Pedido>().Insert(pedido);
-                await EnviarV1("¡Nuevo pedido!", "Pedido recibido");
+                await Task.Delay(2500);
+
+                await EnviarV1("¡Nuevo pedido!", "Pedido recibido, rapido que era para ayer");
             }
             catch (Exception ex)
             {
-                await App.Current.MainPage.DisplayAlert("Error Real", ex.Message, "OK");
+                await App.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
             }
         }
 
 
         //obtener los pedidos de la base de datos en una lista para ponerlos en el grid
-        public async Task<List<Pedido>> ObtenerPlatillos()
+        public async Task<List<Pedido>> ObtenerPedidos()
         {
             try
             {
                 var resultado = await _supabase
                     .From<Pedido>()
+                    .Select("*, cliente_info:Usuarios(*)") 
                     .Get();
 
                 return resultado.Models;
@@ -65,30 +68,51 @@ namespace PitalitasApp.Controllers
 
         public async Task EnviarV1(string titulo, string mensaje)
         {
-            var token = await GetAccessToken();
-            var client = new HttpClient();
-            var url = "https://fcm.googleapis.com/v1/projects/pitalitasapp-cdb72/messages:send";
-
-            var body = new
+            try
             {
-                message = new
+                var token = await GetAccessToken();
+                var client = new HttpClient();
+
+                var url = "https://fcm.googleapis.com/v1/projects/pitalitasapp-cdb72/messages:send";
+
+                var body = new
                 {
-                    topic = "nuevos_pedidos",
-                    notification = new { title = titulo, body = mensaje },
-                    android = new
+                    message = new
                     {
+                        topic = "nuevos_pedidos",
                         notification = new
                         {
-                            channel_id = "default_channel_id", 
+                            title = titulo,
+                            body = mensaje
+                        },
+                        android = new
+                        {
                             priority = "high",
-                            sound = "default"
+                            notification = new
+                            {
+                                channel_id = "default_channel_id",
+                                sound = "default",
+                                click_action = "TOP_LEVEL_ACCESSIBILITY_ACTION" 
+                            }
                         }
                     }
-                }
-            };
+                };
 
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-            await client.PostAsync(url, new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json"));
+                var json = JsonConvert.SerializeObject(body);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+                var response = await client.PostAsync(url, content);
+
+                response.EnsureSuccessStatusCode();
+
+                System.Diagnostics.Debug.WriteLine("Notificación enviada con éxito a Firebase");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error en Firebase: " + ex.Message);
+            }
         }
 
     }

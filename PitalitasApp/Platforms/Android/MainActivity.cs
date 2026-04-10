@@ -42,15 +42,7 @@ namespace PitalitasApp
                 var channel = new NotificationChannel(channelId, channelName, NotificationImportance.High);
                 notificationManager.CreateNotificationChannel(channel);
             }
-
-            try
-            {
-                FirebaseMessaging.Instance.SubscribeToTopic("nuevos_pedidos");
-            }
-            catch (System.Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Error en Firebase: {ex.Message}");
-            }
+           
         }
     }
 
