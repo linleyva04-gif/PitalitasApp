@@ -144,20 +144,34 @@
                                     <CollectionView Grid.Row="1" x:Name="ListaCarrito" Margin="0,10">
                                         <CollectionView.ItemTemplate>
                                             <DataTemplate>
-                                                <Grid ColumnDefinitions="Auto,*,Auto,Auto" Margin="0,5,0,10" ColumnSpacing="15">
+                                                <Grid RowDefinitions="Auto, Auto" Margin="0,5,0,15">
 
-                                                    <Frame Padding="0" CornerRadius="10" HeightRequest="50" WidthRequest="50" IsClippedToBounds="True" HasShadow="False" BorderColor="Transparent">
-                                                        <Image Source="{Binding Producto.imagen_url}" Aspect="AspectFill"/>
-                                                    </Frame>
+                                                    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto,Auto" ColumnSpacing="10">
+                                                        <Frame Padding="0" CornerRadius="10" HeightRequest="50" WidthRequest="50" IsClippedToBounds="True" HasShadow="False" BorderColor="Transparent">
+                                                            <Image Source="{Binding Producto.imagen_url}" Aspect="AspectFill"/>
+                                                        </Frame>
 
-                                                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
-                                                        <Label Text="{Binding Producto.nombre}" TextColor="White" FontAttributes="Bold" FontSize="14"/>
-                                                        <Label Text="{Binding Cantidad, StringFormat='Cant: {0}'}" TextColor="#9A9A9A" FontSize="12"/>
-                                                    </VerticalStackLayout>
+                                                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                                            <Label Text="{Binding Producto.nombre}" TextColor="White" FontAttributes="Bold" FontSize="14"/>
+                                                            <Label Text="{Binding Cantidad, StringFormat='Cant: {0}'}" TextColor="#9A9A9A" FontSize="12"/>
+                                                        </VerticalStackLayout>
 
-                                                    <Label Grid.Column="2" Text="{Binding Subtotal, StringFormat='${0:F2}'}" TextColor="#FF6A00" FontAttributes="Bold" FontSize="16" VerticalOptions="Center" Margin="0,0,10,0"/>
+                                                        <Label Grid.Column="2" Text="{Binding Subtotal, StringFormat='${0:F2}'}" TextColor="#FF6A00" FontAttributes="Bold" FontSize="16" VerticalOptions="Center" Margin="0,0,5,0"/>
 
-                                                    <ImageButton Grid.Column="3" Source="trash.png" HeightRequest="20" WidthRequest="20" BackgroundColor="Transparent" Clicked="OnEliminarItemCarrito_Invoked" CommandParameter="{Binding .}"/>
+                                                        <Button Grid.Column="3" Text="Nota" FontSize="10" Padding="5,0" HeightRequest="25" BackgroundColor="#2A2A2A" TextColor="White" CornerRadius="5" VerticalOptions="Center" Clicked="OnToggleNota_Clicked" CommandParameter="{Binding .}"/>
+
+                                                        <ImageButton Grid.Column="4" Source="trash.png" HeightRequest="20" WidthRequest="20" BackgroundColor="Transparent" VerticalOptions="Center" Clicked="OnEliminarItemCarrito_Invoked" CommandParameter="{Binding .}"/>
+                                                    </Grid>
+
+                                                    <Entry Grid.Row="1" 
+                                                           Text="{Binding ComentarioEspecial}" 
+                                                           IsVisible="{Binding MostrarComentario}"
+                                                           Placeholder="Ej. Sin cebolla, sin aderezo..." 
+                                                           PlaceholderColor="#666666" 
+                                                           TextColor="#FF6A00" 
+                                                           BackgroundColor="#1A1A1A" 
+                                                           FontSize="12" 
+                                                           Margin="0,8,0,0"/>
                                                 </Grid>
                                             </DataTemplate>
                                         </CollectionView.ItemTemplate>
@@ -192,10 +206,6 @@
                                                         <x:String>Transferencia</x:String>
                                                     </Picker.Items>
                                                 </Picker>
-                                            </Frame>
-
-                                            <Frame BackgroundColor="#F5F3E9" CornerRadius="20" Padding="10" BorderColor="#F5F3E9" HasShadow="False">
-                                                <Editor x:Name="EditorComentario" Placeholder="Comentarios (Ej. Sin cebolla)" HeightRequest="60" TextColor="#FF6A00" BackgroundColor="Transparent"/>
                                             </Frame>
 
                                         </VerticalStackLayout>

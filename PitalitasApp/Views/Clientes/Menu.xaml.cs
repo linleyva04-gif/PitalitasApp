@@ -215,6 +215,17 @@ public partial class MenuCliente : FlyoutPage
             var usuarioActual = await userController.ObtenerUsuarioActual();
             double totalCarrito = CarritoGlobal.Articulos.Sum(x => x.Producto.precio * x.Cantidad);
 
+            // ARMAMOS LAS NOTAS DETALLADAS AQUÍ
+            string comentariosDetallados = "";
+            foreach (var item in CarritoGlobal.Articulos)
+            {
+                if (!string.IsNullOrWhiteSpace(item.ComentarioEspecial))
+                {
+                    comentariosDetallados += $"{item.Cantidad}x {item.Producto.nombre} ({item.ComentarioEspecial}). \n";
+                }
+            }
+            if (string.IsNullOrEmpty(comentariosDetallados)) comentariosDetallados = "Ninguno";
+
             var pedido = new Pedido
             {
                 id_cliente = (int)usuarioActual.Id,
@@ -222,9 +233,9 @@ public partial class MenuCliente : FlyoutPage
                 total = totalCarrito,
                 tipo_pago = PickerMetodoPago.SelectedItem?.ToString() ?? "Efectivo",
                 estado = "Pendiente",
-                comentario = EditorComentario.Text,
-                tipo_entrega = tipoEntrega,               
-                id_domicilio = idDomicilioSeleccionado    
+                comentario = comentariosDetallados, // <--- METEMOS LAS NOTAS ARMADAS
+                tipo_entrega = tipoEntrega,
+                id_domicilio = idDomicilioSeleccionado
             };
 
             var controller = new PitalitasApp.Controllers.PedidosController();
@@ -238,12 +249,12 @@ public partial class MenuCliente : FlyoutPage
             ActualizarTotal();
             PickerTipoEntrega.SelectedItem = null;
             PickerDireccion.SelectedItem = null;
-            EditorComentario.Text = "";
+            await PanelCarrito.TranslateTo(0, 800, 300, Easing.SinIn);
         }
         catch (Exception ex)
         {
             await DisplayAlert("Error", "Ocurrió un problema: " + ex.Message, "OK");
-        }
+        }   
     }
     // Cargamos las direcciones para tenerlas listas en el Picker
     private async Task CargarDomiciliosCliente()
@@ -281,6 +292,17 @@ public partial class MenuCliente : FlyoutPage
         // CORRECCIÓN: Sumamos desde CarritoGlobal
         double total = CarritoGlobal.Articulos.Sum(i => i.Subtotal);
         LblTotal.Text = $"${total:F2}";
+    }
+    private void OnToggleNota_Clicked(object sender, EventArgs e)
+    {
+        var boton = (Button)sender;
+        var itemCarrito = (carrito)boton.CommandParameter;
+
+        if (itemCarrito != null)
+        {
+            // Si está oculta la muestra, si se está mostrando la oculta
+            itemCarrito.MostrarComentario = !itemCarrito.MostrarComentario;
+        }
     }
 
 }
