@@ -37,18 +37,14 @@ public partial class MenuCliente : FlyoutPage
     {
         try
         {
-            // Le pedimos los datos a Supabase usando el controlador de tu compañera
             var productos = await _controller.ObtenerPlatillos();
 
             if (productos != null && productos.Any())
             {
-                // Guardamos la lista completa para poder usar los filtros ("Entradas", "Bebidas", etc.) sin volver a descargar
                 _listaMaestraPlatillos = productos.ToList();
 
-                // Pintamos la lista en la pantalla
                 ListaPlatillos.ItemsSource = _listaMaestraPlatillos;
 
-                // Reiniciamos los filtros para que "Todo" esté seleccionado visualmente
                 ResetCategorias();
                 FrameTodo.BackgroundColor = Color.FromArgb("#F5F3E9");
                 LblTodo.TextColor = Colors.Black;
@@ -88,7 +84,6 @@ public partial class MenuCliente : FlyoutPage
     {
         var boton = (Button)sender;
         var productoSeleccionado = (Producto)boton.BindingContext;
-
 
         var itemExistente = CarritoGlobal.Articulos.FirstOrDefault(x => x.Producto.id == productoSeleccionado.id);
 

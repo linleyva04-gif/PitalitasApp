@@ -133,99 +133,86 @@
                                BackgroundColor="#1E1E1E" CornerRadius="30" Padding="20" 
                                TranslationY="800" HasShadow="True" VerticalOptions="End">
                             <VerticalStackLayout Spacing="20">
-                                <Label Text="Tu carrito" FontSize="22" FontAttributes="Bold" TextColor="White"/>
+                                <Grid RowDefinitions="Auto, *, Auto, 220, Auto">
 
-                                <CollectionView x:Name="ListaCarrito" HeightRequest="300">
-                                    <CollectionView.ItemTemplate>
-                                        <DataTemplate x:DataType="models:carrito">
-                                            <SwipeView>
-                                                <SwipeView.LeftItems>
-                                                    <SwipeItems Mode="Execute">
-                                                        <SwipeItem Text="Eliminar"
-                                                                   BackgroundColor="Red"
-                                                                   Invoked="OnEliminarItemCarrito_Invoked"
-                                                                   CommandParameter="{Binding .}" 
-                                                                   />
-                                                    </SwipeItems>
-                                                </SwipeView.LeftItems>
+                                    <Label Grid.Row="0" Text="Tu carrito" FontSize="20" FontAttributes="Bold" TextColor="White" Margin="0,0,0,15"/>
 
-                                                <Frame BackgroundColor="#F5F3E9" 
-                                                       CornerRadius="15" 
-                                                       Margin="0,0,0,10" 
-                                                       Padding="15"
-                                                       BorderColor="#F5F3E9">
-                                                    <Grid ColumnDefinitions="*,Auto">
-                                                        <VerticalStackLayout>
-                                                            <Label Text="{Binding Producto.nombre}" 
-                                                                   TextColor="#FF6A00" 
-                                                                   FontAttributes="Bold" 
-                                                                   FontSize="16"/>
-                                                            <Label Text="{Binding Cantidad, StringFormat='Cantidad: {0}'}" 
-                                                                   TextColor="Gray" 
-                                                                   FontSize="12"/>
-                                                        </VerticalStackLayout>
+                                    <CollectionView Grid.Row="1" x:Name="ListaCarrito" Margin="0,10">
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid ColumnDefinitions="Auto,*,Auto,Auto" Margin="0,5,0,10" ColumnSpacing="15">
 
-                                                        <Label Grid.Column="1" 
-                                                               Text="{Binding Subtotal, StringFormat='${0:F2}'}" 
-                                                               TextColor="#FF6A00" 
-                                                               FontAttributes="Bold" 
-                                                               FontSize="18" 
-                                                               VerticalOptions="Center"/>
-                                                    </Grid>
-                                                </Frame>
-                                            </SwipeView>
-                                        </DataTemplate>
-                                    </CollectionView.ItemTemplate>
-                                </CollectionView>
+                                                    <Frame Padding="0" CornerRadius="10" HeightRequest="50" WidthRequest="50" IsClippedToBounds="True" HasShadow="False" BorderColor="Transparent">
+                                                        <Image Source="{Binding Producto.imagen_url}" Aspect="AspectFill"/>
+                                                    </Frame>
 
-                                <Grid ColumnDefinitions="*,Auto">
-                                    <Label Text="Total:" FontSize="18" FontAttributes="Bold" TextColor="White"/>
-                                    <Label x:Name="LblTotal" Grid.Column="1" Text="$0.00" FontSize="18" FontAttributes="Bold" TextColor="#FF6A00"/>
-                                </Grid>
+                                                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                                        <Label Text="{Binding Producto.nombre}" TextColor="White" FontAttributes="Bold" FontSize="14"/>
+                                                        <Label Text="{Binding Cantidad, StringFormat='Cant: {0}'}" TextColor="#9A9A9A" FontSize="12"/>
+                                                    </VerticalStackLayout>
 
-                                <Frame BackgroundColor="#F5F3E9"
-                                       CornerRadius="20"
-                                       Padding="10"
-                                       BorderColor="#F5F3E9"
-                                       HasShadow="False">
+                                                    <Label Grid.Column="2" Text="{Binding Subtotal, StringFormat='${0:F2}'}" TextColor="#FF6A00" FontAttributes="Bold" FontSize="16" VerticalOptions="Center" Margin="0,0,10,0"/>
 
-                                    <Picker x:Name="PickerMetodoPago"
-                                            Title="Selecciona método de pago"
-                                            TextColor="#FF6A00"
-                                            BackgroundColor="Transparent">
-                                        
-                                            <Picker.Items>
-                                                <x:String>Efectivo</x:String>
-                                                <x:String>Tarjeta</x:String>
-                                                <x:String>Transferencia</x:String>
-                                            </Picker.Items>
-                                    </Picker>
+                                                    <ImageButton Grid.Column="3" Source="trash.png" HeightRequest="20" WidthRequest="20" BackgroundColor="Transparent" Clicked="OnEliminarItemCarrito_Invoked" CommandParameter="{Binding .}"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
 
-                                </Frame>
+                                    <Grid Grid.Row="2" ColumnDefinitions="*,Auto" Margin="0,15,0,10">
+                                        <Label Text="Total:" FontSize="18" FontAttributes="Bold" TextColor="White"/>
+                                        <Label x:Name="LblTotal" Grid.Column="1" Text="$0.00" FontSize="18" FontAttributes="Bold" TextColor="#FF6A00"/>
+                                    </Grid>
 
-                                <Frame BackgroundColor="#F5F3E9"
-                                       CornerRadius="20"
-                                       Padding="10"
-                                       BorderColor="#F5F3E9"
-                                       HasShadow="False">
+                                    <ScrollView Grid.Row="3" Margin="0,0,0,15">
+                                        <VerticalStackLayout Spacing="10">
 
-                                    <Editor x:Name="EditorComentario"
-                                            Placeholder="Comentario para el pedido (opcional)"
-                                            AutoSize="TextChanges"
-                                            HeightRequest="80"
-                                            TextColor="#FF6A00"
-                                            BackgroundColor="Transparent"/>
+                                            <Frame BackgroundColor="#F5F3E9" CornerRadius="20" Padding="10" BorderColor="#F5F3E9" HasShadow="False">
+                                                <Picker x:Name="PickerTipoEntrega" Title="¿Cómo recibes tu pedido?" TextColor="#FF6A00" BackgroundColor="Transparent" SelectedIndexChanged="OnTipoEntrega_SelectedIndexChanged">
+                                                    <Picker.Items>
+                                                        <x:String>Recoger en tienda</x:String>
+                                                        <x:String>Envío a domicilio</x:String>
+                                                    </Picker.Items>
+                                                </Picker>
+                                            </Frame>
 
-                                </Frame>
+                                            <Frame x:Name="FrameCliente" IsVisible="False" BackgroundColor="#F5F3E9" CornerRadius="20" Padding="10" BorderColor="#FF6A00" HasShadow="False">
+                                                <Picker x:Name="PickerCliente" Title="Seleccione al cliente" ItemDisplayBinding="{Binding Name}" TextColor="#FF6A00" BackgroundColor="Transparent" SelectedIndexChanged="OnClienteSeleccionado_Changed"/>
+                                            </Frame>
 
-                                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
-                                    <Button Grid.Column="0" Text="Realizar" BackgroundColor="#F5F3E9" TextColor="#FF6A00" CornerRadius="20" HeightRequest="60"  ImageSource="check.png" ContentLayout="Rigth, 10" Clicked="RealizarPedido_Clicked"/>
-                                    <Button Grid.Column="1" Text="Cerrar" Clicked="CerrarCarrito" BackgroundColor="#F5F3E9" TextColor="#FF6A00" CornerRadius="20" HeightRequest="60"  ImageSource="cancel.png" ContentLayout="Rigth, 10"/>
+                                            <Frame x:Name="FrameDireccion" IsVisible="False" BackgroundColor="#F5F3E9" CornerRadius="20" Padding="10">
+                                                <Picker x:Name="PickerDireccion" 
+                                                        Title="Selecciona su dirección" 
+                                                        ItemDisplayBinding="{Binding colonia}" 
+                                                        TextColor="#FF6A00" />      
+                                            </Frame>
+
+                                            <Frame BackgroundColor="#F5F3E9" CornerRadius="20" Padding="10" BorderColor="#F5F3E9" HasShadow="False">
+                                                <Picker x:Name="PickerMetodoPago" Title="Método de pago" TextColor="#FF6A00" BackgroundColor="Transparent">
+                                                    <Picker.Items>
+                                                        <x:String>Efectivo</x:String>
+                                                        <x:String>Tarjeta</x:String>
+                                                        <x:String>Transferencia</x:String>
+                                                    </Picker.Items>
+                                                </Picker>
+                                            </Frame>
+
+                                            <Frame BackgroundColor="#F5F3E9" CornerRadius="20" Padding="10" BorderColor="#F5F3E9" HasShadow="False">
+                                                <Editor x:Name="EditorComentario" Placeholder="Comentarios (Ej. Sin cebolla)" HeightRequest="60" TextColor="#FF6A00" BackgroundColor="Transparent"/>
+                                            </Frame>
+
+                                        </VerticalStackLayout>
+                                    </ScrollView>
+
+                                    <Grid Grid.Row="4" ColumnDefinitions="*,*" ColumnSpacing="10">
+                                        <Button Grid.Column="0" Text="Realizar" BackgroundColor="#F5F3E9" TextColor="#FF6A00" CornerRadius="20" HeightRequest="60" ImageSource="check.png" ContentLayout="Left, 10" Clicked="RealizarPedido_Clicked"/>
+                                        <Button Grid.Column="1" Text="Cerrar" Clicked="CerrarCarrito" BackgroundColor="#F5F3E9" TextColor="#FF6A00" CornerRadius="20" HeightRequest="60" ImageSource="cancel.png" ContentLayout="Left, 10"/>
+                                    </Grid>
+
                                 </Grid>
                             </VerticalStackLayout>
                         </Frame>
                     </Grid>
-
                 </ContentPage>
             </x:Arguments>
         </NavigationPage>

@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "pitalitasapp-cdb72",
+  "private_key_id": "4cf784cc5aa7b4261b1523643ef19862b3d3334b",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDNWjxLcZKs9L88\nwuUv9JjKo4GM4hO2Cw5uOB8ezj+safNtos9tDLDM+0mGTOTX7zvNU6xdrwUbCVqK\nrv8ZW2YP0WkS1sUAWGrDqbsyssO3H8UD4GiuoocXIDxv25yMXViCAnWnSMFgWxI6\nj11++w7aThsmkXHAoDdALzvJHcgTdESQZsNgDU083PLMSpDQLV7H10RHmeAjXyt6\nF+gH75dXsK9gJ55Z0NOiUkSsdwXK97MN+cJ2HNT6ddYDP1oZCCLTDa8QxBXoYW07\n5ZHjXkbkJmSFH0ndVSj+wFU8ejOjmAphmBvebvMlHLor8Cl/jrqgFSl1SG3LxxC0\ngjPJKKXBAgMBAAECggEAGC+p9RVO+hu39/E5AvNPOSO1nxkkCu+FrzXhNXTDk1wl\nwYqY3W5Olw/8NosRM30f+SSjIyQZaPgqr7WhglQtYszOcDt3N72SMpInxBaBvmxp\nnRWl4rauDEtdzutp5m7anTJqts2XCBEl5huLXqi1dMEZCct83zwHkeHWS+9b6K11\nl+yGMajHoWu1Ph5Yk3XcPdLDVaf1MbivxvztKmS8pguUFP32QNjjf3Dvy74euXdj\no07CAB/dZPErOtQh105dBqwoB+SzKKR14CcK+GjywKyAJcdkWP5tjuSmYB/0b053\nx2YHR1GdnUJg1mN3dPDbkIzkW/Af2L+mxaRl6aSnSQKBgQDtp71oETFC3Gyh8wCK\nfxAs8Nu//QMLtFxlOxcBIR8xGxkcx8tXy3Dby0K4ZzyfMgbi4BaN3Pyr8OoHEjMk\nSzUzYj59iZHuks3lL76Yu0wHptJXoT7MaBCp2tRXZQyTGtY2+C+NQCGibnvJH94U\n3wGukm/loOEKLUSmadDrLGZWeQKBgQDdNCrG3Ja9cEsEDkfM31aBlYwBT6ytqmKV\n1dh/SDlnaKpjys7Ly+EwpU1ipm46HqOomijb+cUkJ+tgkSmjjf+hnvHaWM9+NDhn\nlDIL5HZJBPJqzBIzbaN/UxODAQ+Gw6dnDmzmaZKL1s/VlvlbUXhOWZZtKeR741gq\ndqGPt7uXiQKBgC/CD6wEGHQpO6Nn4+nxEt0VIfP48k291vt43myZrVz+5xMDi3d/\nKJTiyeuow2Pyd7PL+HxVtmkPJth47dITUwOacJhltu/MjJfL+m9S5Dp9abO2cZo+\nJ2sa0KUnZ1mAgR/WzCeEhb3QmguW3dgv4HSmdNoedFrJMgyHIza/W2lxAoGAInpq\nHHrvh/GDz8sGB/nbuvD7VIz9pkgDe8VMLHKud97JiCppVzydCf8J89FrJuX1rmbw\n7XCd+Me8GV4m9lZAvQlQOy9SkCJFlGd18YKXqUP7IQhT4e456LOjO+0jZWcDpb2K\n3dMgw2klFe6lSUWGkffGyZcZBPJnoJ7DCeqic7kCgYEArVQCbw5bWHFQHLSBf3ZU\nra5xqBZCAnDIixh7+9uwtX7TV8v/qJ8Voo0ahezHxsxyK8+b7Qy7U80VJCmIldCo\nna8P5+fGx7x6Iu3mEmQ4tcb5AuEdEn0vgu3m/gJZyrHCdrNA/bnvKEuip4+iSoQE\nGXvFoKEHJqgnRmUw4B+UUfo=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-fbsvc@pitalitasapp-cdb72.iam.gserviceaccount.com",
+  "client_id": "108604491592716170955",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40pitalitasapp-cdb72.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

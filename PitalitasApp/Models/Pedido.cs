@@ -26,7 +26,5 @@ namespace PitalitasApp.Models
         [Column("id_domicilio")]
         public int? id_domicilio { get; set; } // Puede ser null si es para recoger o comedor
 
-        [Column("numero_mesa")]
-        public string numero_mesa { get; set; } // Puede ser null si es a domicilio
     }
 }
