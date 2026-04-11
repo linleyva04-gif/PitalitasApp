@@ -2,13 +2,14 @@
 using Supabase.Postgrest.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PitalitasApp.Models
 {
-    [Table("pedidos")]
+    [Supabase.Postgrest.Attributes.Table("pedidos")]
     public class Pedido : BaseModel
     {
         [PrimaryKey("id", false)]
@@ -20,11 +21,17 @@ namespace PitalitasApp.Models
         public string estado {  get; set; }
         public string comentario { get; set; }
 
-        [Column("tipo_entrega")]
         public string tipo_entrega { get; set; } // "Domicilio", "Recoger", "Comedor"
 
-        [Column("id_domicilio")]
         public int? id_domicilio { get; set; } // Puede ser null si es para recoger o comedor
+
+
+        //info del cliente para colocarla en la tabla de pedidos
+        [Reference(typeof(Usuario))]
+        public Usuario cliente_info { get; set; }
+
+        [NotMapped]
+        public string NombreCliente => cliente_info?.Name ?? "Cargando...";
 
     }
 }

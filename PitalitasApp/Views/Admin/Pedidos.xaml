@@ -5,15 +5,16 @@
              Title="Pedidos"
              xmlns:syncfusion="clr-namespace:Syncfusion.Maui.DataGrid;assembly=Syncfusion.Maui.DataGrid">
     <syncfusion:SfDataGrid x:Name="dataGridPedidos"
-                       ItemsSource="{Binding ListaPedidos}"
-                       AutoGenerateColumnsMode="None"
-                       GridLinesVisibility="None"
-                       HeaderGridLinesVisibility="None"
-                       SelectionMode="Single"
-                       ColumnWidthMode="Fill"
-                       BackgroundColor="Transparent"
-                       RowHeight="70"
-                       HeaderRowHeight="45">
+                           ItemsSource="{Binding ListaPedidos}"
+                           AutoGenerateColumnsMode="None"
+                           GridLinesVisibility="None"
+                           HeaderGridLinesVisibility="None"
+                           SelectionMode="Single"
+                           ColumnWidthMode="Fill"
+                           BackgroundColor="Transparent"
+                           HorizontalScrollBarVisibility="Always"
+                           RowHeight="70"
+                           HeaderRowHeight="45">
 
         <syncfusion:SfDataGrid.DefaultStyle>
             <syncfusion:DataGridStyle 
@@ -31,6 +32,11 @@
             MappingName="fecha" 
             HeaderText="Fecha"
             Width="120"/>
+
+            <syncfusion:DataGridTextColumn 
+                     MappingName="NombreCliente" 
+                     HeaderText="Nombre Cliente"
+                     Width="120"/>
 
             <syncfusion:DataGridTemplateColumn 
             MappingName="estado" 
