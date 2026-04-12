@@ -79,37 +79,36 @@
 
                             <CollectionView.ItemTemplate>
                                 <DataTemplate x:DataType="models:Producto">
-                                    <Frame BackgroundColor="#F5F3E9" CornerRadius="22" Padding="18" 
-                                           BorderColor="Transparent" HasShadow="True">
+                                    <Frame BackgroundColor="Transparent" CornerRadius="22" Padding="15" 
+                                           BorderColor="#F5F3E9" HasShadow="True" HeightRequest="280"
+                                           >
                                         <Frame.Shadow>
                                             <Shadow Brush="#000000" Opacity="0.4" Radius="10" Offset="0,5"/>
                                         </Frame.Shadow>
 
-                                        <VerticalStackLayout Spacing="12">
-                                            <Frame Padding="0"
-                                                   CornerRadius="20"
-                                                   IsClippedToBounds="True"
-                                                   HasShadow="False"
-                                                   HorizontalOptions="Center"
-                                                   BorderColor="#F5F3E9">
+                                        <Grid RowDefinitions="Auto, *, Auto">
 
-                                                <Image Source="{Binding imagen_url}"
-                                                       HeightRequest="120"
-                                                       WidthRequest="120"
-                                                       Aspect="AspectFill"/>
-
+                                            <Frame Grid.Row="0" Padding="0" CornerRadius="20" IsClippedToBounds="True" BorderColor="Transparent"
+                                                    HasShadow="False" HorizontalOptions="Center" HeightRequest="135" WidthRequest="135">
+                                                <Image Source="{Binding imagen_url}" Aspect="AspectFill"/>
                                             </Frame>
-                                            <VerticalStackLayout Spacing="2">
-                                                <Label Text="{Binding nombre}" FontAttributes="Bold" FontSize="15" TextColor="Black"/>
-                                                <Label Text="{Binding descripcion}" FontSize="12" TextColor="#9A9A9A" MaxLines="2" LineBreakMode="TailTruncation"/>
+
+                                            <VerticalStackLayout Grid.Row="1" Spacing="2" VerticalOptions="Start" Margin="0,10">
+                                                <Label Text="{Binding nombre}" FontAttributes="Bold" FontSize="14" TextColor="#F5F3E9" MaxLines="1" LineBreakMode="TailTruncation"/>
+                                                <Label Text="{Binding descripcion}" FontSize="11" TextColor="#9A9A9A" MaxLines="2" LineBreakMode="TailTruncation"/>
                                             </VerticalStackLayout>
-                                            <Grid ColumnDefinitions="*,Auto">
-                                                <Label Text="{Binding precio, StringFormat='${0:F2}'}" FontSize="16" FontAttributes="Bold" TextColor="#FF6A00" VerticalOptions="Center"/>
-                                                <Button Grid.Column="1" Text="+" FontSize="18" FontAttributes="Bold" TextColor="White" 
-                                                        BackgroundColor="#FF6A00" WidthRequest="36" HeightRequest="36" CornerRadius="18"
+
+                                            <Grid Grid.Row="2" ColumnDefinitions="*, Auto" VerticalOptions="End">
+                                                <Label Text="{Binding precio, StringFormat='${0:F2}'}" 
+                                                       FontSize="16" FontAttributes="Bold" 
+                                                       TextColor="#FF6A00" VerticalOptions="Center"/>
+
+                                                <Button Grid.Column="1" Text="+" FontSize="18" FontAttributes="Bold" 
+                                                        TextColor="White" BackgroundColor="#FF6A00" 
+                                                        WidthRequest="38" HeightRequest="38" CornerRadius="19"
                                                         Clicked="OnAgregarAlCarrito_Clicked" CommandParameter="{Binding .}"/>
                                             </Grid>
-                                        </VerticalStackLayout>
+                                        </Grid>
                                     </Frame>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
