@@ -25,12 +25,12 @@ namespace PitalitasApp.Models
 
         public int? id_domicilio { get; set; } // Puede ser null si es para recoger o comedor
 
-
-        //info del cliente para colocarla en la tabla de pedidos
-        [Reference(typeof(Usuario))]
+        // info del cliente para colocarla en la tabla de pedidos
+        [Supabase.Postgrest.Attributes.Reference(typeof(Usuario))]
         public Usuario cliente_info { get; set; }
 
-        [NotMapped]
+        // Con esta única etiqueta evitamos que truene al pedir o consultar
+        [Newtonsoft.Json.JsonIgnore]
         public string NombreCliente => cliente_info?.Name ?? "Cargando...";
 
     }

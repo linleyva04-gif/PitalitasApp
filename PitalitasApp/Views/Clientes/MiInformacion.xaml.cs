@@ -13,6 +13,16 @@ public partial class MiInformacion : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+
+        var userController = new PitalitasApp.Controllers.Usuarios(Login.GetClient());
+        var usuarioActual = await userController.ObtenerUsuarioActual();
+
+        if (usuarioActual != null)
+        {
+            // Llenamos los campos de texto automáticamente
+            EntryNombre.Text = usuarioActual.Name;
+            EntryTelefono.Text = usuarioActual.telefono;
+        }
         await CargarDirecciones();
     }
 
@@ -104,6 +114,47 @@ public partial class MiInformacion : ContentPage
         EntryColonia.Text = "";
         EntryReferencia.Text = "";
         FormularioNuevaDireccion.IsVisible = false;
+    }
+    private async void OnActualizarDatos_Clicked(object sender, EventArgs e)
+    {
+        if (string.IsNullOrWhiteSpace(EntryNombre.Text))
+        {
+            await DisplayAlert("Aviso", "El nombre no puede estar vacío", "OK");
+            return;
+        }
+
+        try
+        {
+            var userController = new PitalitasApp.Controllers.Usuarios(Login.GetClient());
+            var usuarioActual = await userController.ObtenerUsuarioActual();
+
+            if (usuarioActual != null)
+            {
+                var clienteSupabase = Login.GetClient();
+
+                // 1. Descargamos tu registro exacto de la base de datos
+                var respuesta = await clienteSupabase.From<Usuario>()
+                                    .Where(x => x.Id == usuarioActual.Id)
+                                    .Get();
+
+                var usuarioDb = respuesta.Models.FirstOrDefault();
+
+                if (usuarioDb != null)
+                {
+                    // 2. Le cambiamos el nombre
+                    usuarioDb.Name = EntryNombre.Text;
+
+                    // 3. Subimos el registro actualizado
+                    await clienteSupabase.From<Usuario>().Update(usuarioDb);
+
+                    await DisplayAlert("¡Éxito!", "Tus datos han sido actualizados.", "Genial");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Error", "No se pudieron actualizar los datos: " + ex.Message, "OK");
+        }
     }
     private async void OnEliminarDireccion_Clicked(object sender, EventArgs e)
     {

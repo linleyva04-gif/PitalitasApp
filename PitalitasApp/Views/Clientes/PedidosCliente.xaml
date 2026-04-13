@@ -4,43 +4,59 @@
              xmlns:syncfusion="clr-namespace:Syncfusion.Maui.DataGrid;assembly=Syncfusion.Maui.DataGrid"
              x:Class="PitalitasApp.Views.Clientes.PedidosCliente"
              Title="Mis Pedidos"
-             BackgroundColor="#0A0A0A">
+             BackgroundColor="#121212">
 
-    <Grid RowDefinitions="Auto, *">
-        <Label Grid.Row="0" Text="Historial de Compras" FontSize="24" FontAttributes="Bold" 
-               TextColor="White" Margin="20,20,20,10"/>
+    <Grid RowDefinitions="Auto, *" Margin="15,20,15,0">
+
+        <VerticalStackLayout Grid.Row="0" Margin="0,0,0,20" Spacing="5">
+            <Label Text="Historial de compras" FontSize="22" FontAttributes="Bold" TextColor="White"/>
+            <Label Text="Tus pedidos recientes y su estado." FontSize="14" TextColor="#9A9A9A"/>
+        </VerticalStackLayout>
 
         <syncfusion:SfDataGrid Grid.Row="1" x:Name="dataGridHistorial"
                                ItemsSource="{Binding ListaPedidos}"
                                AutoGenerateColumnsMode="None"
                                ColumnWidthMode="Fill"
                                HeaderRowHeight="50"
-                               RowHeight="70"
+                               RowHeight="75"
                                SelectionMode="None"
-                               BackgroundColor="Transparent">
+                               BackgroundColor="Transparent"
+                               GridLinesVisibility="Horizontal"
+                               HeaderGridLinesVisibility="None">
 
             <syncfusion:SfDataGrid.DefaultStyle>
-                <syncfusion:DataGridStyle RowBackground="#1A1A1A" RowTextColor="White"
-                                          HeaderRowBackground="#262626" HeaderRowTextColor="#FF6A00"
-                                          GridLineColor="Transparent"/>
+                <syncfusion:DataGridStyle RowBackground="Transparent" 
+                                          RowTextColor="White"
+                                          HeaderRowBackground="Transparent" 
+                                          HeaderRowTextColor="#FF6A00"
+                                          GridLineColor="#2A2A2A"/>
             </syncfusion:SfDataGrid.DefaultStyle>
 
             <syncfusion:SfDataGrid.Columns>
-                <syncfusion:DataGridTextColumn MappingName="fecha" HeaderText="Fecha" Format="dd/MM/yy" Width="100"/>
+                <syncfusion:DataGridTextColumn MappingName="fecha" HeaderText="FECHA" Format="dd MMM" Width="80"/>
 
-                <syncfusion:DataGridTextColumn MappingName="total" HeaderText="Total" Format="C2" Width="90"/>
+                <syncfusion:DataGridTemplateColumn MappingName="total" HeaderText="TOTAL" Width="90">
+                    <syncfusion:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Text="{Binding total, StringFormat='${0:F2}'}" TextColor="#FF6A00" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Center"/>
+                        </DataTemplate>
+                    </syncfusion:DataGridTemplateColumn.CellTemplate>
+                </syncfusion:DataGridTemplateColumn>
 
-                <syncfusion:DataGridTextColumn MappingName="estado" HeaderText="Estado" Width="110"/>
+                <syncfusion:DataGridTextColumn MappingName="estado" HeaderText="ESTADO"/>
 
-                <syncfusion:DataGridTemplateColumn HeaderText="Acción">
+                <syncfusion:DataGridTemplateColumn HeaderText="ACCIÓN" Width="90">
                     <syncfusion:DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button Text="Cancelar" 
-                                    FontSize="10"
-                                    HeightRequest="35"
-                                    Margin="5"
-                                    BackgroundColor="#331010"
+                                    FontSize="11"
+                                    HeightRequest="32"
+                                    Padding="0"
+                                    Margin="5,0"
+                                    BackgroundColor="#2A1010"
                                     TextColor="#FF3B30"
+                                    CornerRadius="8"
+                                    VerticalOptions="Center"
                                     IsVisible="{Binding PuedeCancelar}"
                                     Clicked="OnCancelarPedido_Clicked"
                                     CommandParameter="{Binding .}"/>

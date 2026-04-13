@@ -25,16 +25,19 @@
 
                                     <HorizontalStackLayout Spacing="30">
                                         <Image Source="pitahaya.png" HeightRequest="80" VerticalOptions="Center"/>
-                                        <VerticalStackLayout Spacing="2" VerticalOptions="Center">
-                                            <Label Text="Buenas tardes," TextColor="#9A9A9A" FontSize="13"/>
-                                            <Label Text="Cliente" TextColor="White" FontSize="26" FontAttributes="Bold"/>
+                                        <VerticalStackLayout>
+                                            <Label x:Name="LblSaludo" Text="Buenas tardes," TextColor="#9A9A9A" FontSize="14"/>
+                                            <Label x:Name="LblNombreCliente" Text="Cargando..." TextColor="White" FontSize="24" FontAttributes="Bold"/>
                                         </VerticalStackLayout>
                                     </HorizontalStackLayout>
 
                                     <Frame BackgroundColor="#2A2A2A" CornerRadius="30" Padding="10" 
                                            BorderColor="#2A2A2A" HeightRequest="50" HasShadow="False">
-                                        <SearchBar Placeholder="Buscar platillo" TextColor="White"
-                                                   PlaceholderColor="DarkGray" BackgroundColor="Transparent"/>
+                                        <SearchBar x:Name="BarraBusqueda" 
+                                                   Placeholder="Buscar platillo" 
+                                                   TextChanged="OnBuscarPlatillo_TextChanged" 
+                                                   TextColor="White" 
+                                                   PlaceholderColor="#9A9A9A"/>
                                     </Frame>
 
                                     <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">

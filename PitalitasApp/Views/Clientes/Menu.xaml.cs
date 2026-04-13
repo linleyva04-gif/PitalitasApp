@@ -26,6 +26,22 @@ public partial class MenuCliente : FlyoutPage
     {
         base.OnAppearing();
 
+        // 1. Saludo según la hora del día
+        int hora = DateTime.Now.Hour;
+        if (hora >= 5 && hora < 12) LblSaludo.Text = "Buenos días,";
+        else if (hora >= 12 && hora < 19) LblSaludo.Text = "Buenas tardes,";
+        else LblSaludo.Text = "Buenas noches,";
+
+        // 2. Cargar el nombre del usuario
+        var userController = new PitalitasApp.Controllers.Usuarios(Login.GetClient());
+        var usuarioActual = await userController.ObtenerUsuarioActual();
+
+        if (usuarioActual != null)
+        {
+            // Solo mostramos el primer nombre para que no se vea amontonado
+            string primerNombre = usuarioActual.Name.Split(' ')[0];
+            LblNombreCliente.Text = primerNombre;
+        }
         await CargarPlatillos();
 
         // Refrescamos el carrito por si venimos de otra pantalla
@@ -183,6 +199,12 @@ public partial class MenuCliente : FlyoutPage
 
     private async void RealizarPedido_Clicked(object sender, EventArgs e)
     {
+        //Verificar que haya algo en el carrito
+        if (CarritoGlobal.Articulos == null || !CarritoGlobal.Articulos.Any())
+        {
+            await DisplayAlert("Carrito vacío", "Agrega al menos un platillo para poder pedir.", "OK");
+            return;
+        }
         // 1. Validamos que hayan elegido el tipo de entrega
         string tipoEntrega = PickerTipoEntrega.SelectedItem?.ToString();
         if (string.IsNullOrEmpty(tipoEntrega))
@@ -297,6 +319,25 @@ public partial class MenuCliente : FlyoutPage
         {
             // Si está oculta la muestra, si se está mostrando la oculta
             itemCarrito.MostrarComentario = !itemCarrito.MostrarComentario;
+        }
+    }
+    private void OnBuscarPlatillo_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        var busqueda = e.NewTextValue?.ToLower() ?? "";
+
+        // Si borró todo, volvemos a mostrar la lista completa
+        if (string.IsNullOrWhiteSpace(busqueda))
+        {
+            ListaPlatillos.ItemsSource = _listaMaestraPlatillos;
+        }
+        else
+        {
+            // Filtramos buscando coincidencias en el nombre
+            var platillosFiltrados = _listaMaestraPlatillos
+                .Where(p => p.nombre.ToLower().Contains(busqueda))
+                .ToList();
+
+            ListaPlatillos.ItemsSource = platillosFiltrados;
         }
     }
 

@@ -34,7 +34,7 @@ public partial class PedidosCliente : ContentPage
                 // Pedimos a Supabase SOLO los pedidos de este usuario, ordenados del más nuevo al más viejo
                 var resultados = await cliente.From<Pedido>()
                     .Where(x => x.id_cliente == (int)usuarioActual.Id)
-                    .Order(x => x.fecha, Supabase.Postgrest.Constants.Ordering.Descending)
+                    .Order("fecha", Supabase.Postgrest.Constants.Ordering.Descending)
                     .Get();
 
                 ListaPedidos.Clear();
