@@ -2,19 +2,25 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PitalitasApp.Views.Admin.Pedidos"
+             xmlns:converters="clr-namespace:PitalitasApp.Controllers"
              Title="Pedidos"
              xmlns:syncfusion="clr-namespace:Syncfusion.Maui.DataGrid;assembly=Syncfusion.Maui.DataGrid">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:ColorController x:Key="ColorController"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <syncfusion:SfDataGrid x:Name="dataGridPedidos"
                            ItemsSource="{Binding ListaPedidos}"
                            AutoGenerateColumnsMode="None"
-                           GridLinesVisibility="None"
-                           HeaderGridLinesVisibility="None"
                            SelectionMode="Single"
-                           ColumnWidthMode="Fill"
+                           ColumnWidthMode="None" 
+                           QueryRowHeight="dataGridPedidos_QueryRowHeight" 
+                           HeaderRowHeight="45"
                            BackgroundColor="Transparent"
-                           HorizontalScrollBarVisibility="Always"
-                           RowHeight="70"
-                           HeaderRowHeight="45">
+                           Margin="0,0,0,15">
 
         <syncfusion:SfDataGrid.DefaultStyle>
             <syncfusion:DataGridStyle 
@@ -29,18 +35,26 @@
         <syncfusion:SfDataGrid.Columns>
 
             <syncfusion:DataGridTextColumn 
-            MappingName="fecha" 
-            HeaderText="Fecha"
-            Width="120"/>
-
-            <syncfusion:DataGridTextColumn 
                      MappingName="NombreCliente" 
                      HeaderText="Nombre Cliente"
                      Width="120"/>
 
+            <syncfusion:DataGridTextColumn 
+                        MappingName="tipo_entrega" 
+                        HeaderText="Tipo de entrega"
+                        LineBreakMode="WordWrap" 
+                        Width="150"/>    
+
+            <syncfusion:DataGridTextColumn 
+                      MappingName="comentario" 
+                      HeaderText="Detalles"
+                      LineBreakMode="WordWrap" 
+                      Width="150"/>    
+
             <syncfusion:DataGridTemplateColumn 
-            MappingName="estado" 
-            HeaderText="Estado">
+                        MappingName="estado" 
+                        HeaderText="Estado"
+                        Width="220">
 
                 <syncfusion:DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
@@ -50,14 +64,20 @@
                            Padding="8"
                            Margin="10,6"
                            HasShadow="False"
-                           BorderColor="#333">
+                           BorderColor="#333"
+                           MinimumWidthRequest="180"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center">
 
                             <Picker SelectedItem="{Binding estado}"
-                                TextColor="#FF6A00"
-                                FontAttributes="Bold"
-                                FontSize="13"
-                                HorizontalOptions="Center"
-                                SelectedIndexChanged="OnEstadoChanged">
+                                    TextColor="{Binding SelectedItem, Source={RelativeSource Self}, Converter={StaticResource ColorController}}"
+                                    FontAttributes="Bold"
+                                    FontSize="12"
+                                    HorizontalOptions="Center"
+                                    SelectedIndexChanged="OnEstadoChanged"
+                                    MinimumWidthRequest="180"
+                                    VerticalOptions="Center"
+                                    HorizontalTextAlignment="Center">
 
                                 <Picker.Items>
                                     <x:String>Pendiente</x:String>
@@ -70,10 +90,14 @@
 
                         </Frame>
 
+                        
                     </DataTemplate>
                 </syncfusion:DataGridTemplateColumn.CellTemplate>
 
-            </syncfusion:DataGridTemplateColumn>
+
+
+
+                </syncfusion:DataGridTemplateColumn>
 
         </syncfusion:SfDataGrid.Columns>
 

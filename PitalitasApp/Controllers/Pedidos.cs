@@ -1,11 +1,15 @@
 ﻿using Google.Apis.Auth.OAuth2; 
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using PitalitasApp.Models;
 using Supabase;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace PitalitasApp.Controllers
 {
@@ -25,7 +29,7 @@ namespace PitalitasApp.Controllers
                 await _supabase.From<Pedido>().Insert(pedido);
                 await Task.Delay(2500);
 
-                await EnviarV1("¡Nuevo pedido!", "Pedido recibido, rapido que era para ayer");
+                await EnviarV1("nuevos_pedidos","¡Nuevo pedido!", "Pedido recibido, rapido que era para ayer");
             }
             catch (Exception ex)
             {
@@ -53,20 +57,35 @@ namespace PitalitasApp.Controllers
             }
         }
 
+        //Actualizar el estado de los pedidos en la base de datps
+        public async Task ActualizarEstadoPedido(int idPedido, string nuevoEstado)
+        {
+            await _supabase
+                .From<Pedido>()
+                .Where(x => x.id == idPedido)
+                .Set(x => x.estado, nuevoEstado)
+                .Update();
+        }
+
+
 
         //NOTIFICACIONES
         public async Task<string> GetAccessToken()
         {
             using (var stream = await FileSystem.OpenAppPackageFileAsync("firebase_key.json"))
             {
-                var credential = GoogleCredential.FromStream(stream)
+                var credential = GoogleCredential
+                    .FromStream(stream)
                     .CreateScoped("https://www.googleapis.com/auth/firebase.messaging");
 
-                return await credential.UnderlyingCredential.GetAccessTokenForRequestAsync();
+                var accessToken = await credential.UnderlyingCredential
+                    .GetAccessTokenForRequestAsync();
+
+                return accessToken;
             }
         }
 
-        public async Task EnviarV1(string titulo, string mensaje)
+        public async Task EnviarV1(string topico, string titulo, string mensaje)
         {
             try
             {
@@ -79,7 +98,7 @@ namespace PitalitasApp.Controllers
                 {
                     message = new
                     {
-                        topic = "nuevos_pedidos",
+                        topic = topico,
                         notification = new
                         {
                             title = titulo,
@@ -91,8 +110,7 @@ namespace PitalitasApp.Controllers
                             notification = new
                             {
                                 channel_id = "default_channel_id",
-                                sound = "default",
-                                click_action = "TOP_LEVEL_ACCESSIBILITY_ACTION" 
+                                sound = "default"
                             }
                         }
                     }
@@ -104,16 +122,18 @@ namespace PitalitasApp.Controllers
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
                 var response = await client.PostAsync(url, content);
-
                 response.EnsureSuccessStatusCode();
 
-                System.Diagnostics.Debug.WriteLine("Notificación enviada con éxito a Firebase");
+                System.Diagnostics.Debug.WriteLine($"Notificación enviada con éxito al tópico: {topico}");
             }
             catch (Exception ex)
             {
                 throw new Exception("Error en Firebase: " + ex.Message);
             }
         }
+
+
+
 
     }
 }

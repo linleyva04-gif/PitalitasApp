@@ -18,6 +18,8 @@ namespace PitalitasApp.Models
         public DateTime fecha { get; set; }
         public double total {  get; set; }
         public string tipo_pago { get; set; }
+
+        [Supabase.Postgrest.Attributes.Column("estado")]
         public string estado {  get; set; }
         public string comentario { get; set; }
 
@@ -29,7 +31,6 @@ namespace PitalitasApp.Models
         [Supabase.Postgrest.Attributes.Reference(typeof(Usuario))]
         public Usuario cliente_info { get; set; }
 
-        // Con esta única etiqueta evitamos que truene al pedir o consultar
         [Newtonsoft.Json.JsonIgnore]
         public string NombreCliente => cliente_info?.Name ?? "Cargando...";
 

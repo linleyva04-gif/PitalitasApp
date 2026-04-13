@@ -70,7 +70,9 @@ public partial class LoginView : ContentPage
 
                 //unsubscribe para que se quiten los clientes que ya estaban en nuevos pedidos
                 FirebaseMessaging.Instance.UnsubscribeFromTopic("nuevos_pedidos");
+                FirebaseMessaging.Instance.SubscribeToTopic("estado_pedidos");
+
             }
         }
     }
-}
+} 
